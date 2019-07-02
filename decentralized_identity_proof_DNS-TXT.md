@@ -16,7 +16,6 @@ To establish the proof, the issuer needs to:
 1. Create a TXT record on their DNS under the root domain or sub domain
 2. Add the DNS domain into the issuer object
 
-### DNS Record on openattestation.com
 [Constraints](https://support.agari.com/hc/en-us/articles/202952749-How-long-can-my-SPF-record-be-):
 
     the limit to a TXT string is 255
@@ -24,9 +23,17 @@ To establish the proof, the issuer needs to:
     the limit to total of TXT data for a given record is 65535
 
 
+### Example DNS-TXT Record on openattestation.com, for a Ethereum-Ropsten document store
 ```
 TXT     opencerts net=ethereum net-id=3 addr=0x0c9d5E6C766030cc6f0f49951D275Ad0701F81EC
 ```
+
+
+### Example DNS-TXT Record on openattestation.com, for a Ethereum-Mainnet document store
+```
+TXT     opencerts net=ethereum net-id=1 addr=0x007d40224f6562461633ccfbaffd359ebb2fc9ba
+```
+
 
 ### Identity proof on the OA Document
 
