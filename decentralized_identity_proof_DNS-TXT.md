@@ -1,3 +1,8 @@
+###### Authors:
+Chow Ruijie
+
+Raymond Yeh
+
 # Decentralized Issuer's Identity Proof using DNS-TXT
 The previous method of identifying issuer DocumentStore smart contract addresses was using a simple key-value mapping recorded in JSON, hosted and administered by the OpenCerts core development team. 
 
