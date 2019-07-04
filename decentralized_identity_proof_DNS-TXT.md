@@ -26,17 +26,19 @@ To establish the proof, the issuer needs to:
     the limit to a TXT string is 255
     the limit to a UDP packet is 512
     the limit to total of TXT data for a given record is 65535
+    
+ JS object key names cannot have hyphens so do not use hyphens in key names here either.
 
 
 ### Example DNS-TXT Record on openattestation.com, for a Ethereum-Ropsten document store
 ```
-TXT     opencerts net=ethereum net-id=3 addr=0x0c9d5E6C766030cc6f0f49951D275Ad0701F81EC
+TXT     opencerts net=ethereum netId=3 addr=0x0c9d5E6C766030cc6f0f49951D275Ad0701F81EC
 ```
 
 
 ### Example DNS-TXT Record on openattestation.com, for a Ethereum-Mainnet document store
 ```
-TXT     opencerts net=ethereum net-id=1 addr=0x007d40224f6562461633ccfbaffd359ebb2fc9ba
+TXT     opencerts net=ethereum netId=1 addr=0x007d40224f6562461633ccfbaffd359ebb2fc9ba
 ```
 
 
