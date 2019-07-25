@@ -32,13 +32,13 @@ To establish the proof, the issuer needs to:
 
 ### Example DNS-TXT Record on openattestation.com, for a Ethereum-Ropsten document store
 ```
-TXT     opencerts net=ethereum netId=3 addr=0x0c9d5E6C766030cc6f0f49951D275Ad0701F81EC
+TXT     openatts net=ethereum netId=3 addr=0x0c9d5E6C766030cc6f0f49951D275Ad0701F81EC
 ```
 
 
 ### Example DNS-TXT Record on openattestation.com, for a Ethereum-Mainnet document store
 ```
-TXT     opencerts net=ethereum netId=1 addr=0x007d40224f6562461633ccfbaffd359ebb2fc9ba
+TXT     openatts net=ethereum netId=1 addr=0x007d40224f6562461633ccfbaffd359ebb2fc9ba
 ```
 
 
@@ -51,7 +51,7 @@ TXT     opencerts net=ethereum netId=1 addr=0x007d40224f6562461633ccfbaffd359ebb
         "documentStore": "0x9178F546D3FF57D7A6352bD61B80cCCD46199C2d",
         "identityProof": {
             "type": "DNS-TXT",
-            "domain": "openattestation.com"
+            "location": "openattestation.com"
         }
     }
 ]
@@ -65,7 +65,7 @@ To proof the identity of the owner of the documentStore, we can query the TXT re
 curl https://dns.google/resolve?name=openattestation.io&type=TXT
 ```
 
-At this point, if we find a valid TXT record labelled 'opencerts', we can say that the document is issued from the domain. 
+At this point, if we find a valid TXT record labelled 'openatts', we can say that the document is issued from the domain. 
 
 ### Messaging
 
