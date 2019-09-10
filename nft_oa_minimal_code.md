@@ -6,13 +6,12 @@ Raymond Yeh
 
 The purpose of this document is to explore how to support NFT on OA Platforms (in this case TradeTrust) by with the least code written. This will help in exploring which are the pieces of product that **must be written** and which are the pieces that **has existing solutions, albeit ones that are not intuitive**. From there, we can prioritise the ones that must be written. 
 
-## Token Creation Flow
+## Token Registry Creation Flow (Once per shipping line)
 
 1. Search for ERC721 contract code (See appendix for Mintable ERC721 with Metadata)
-2. Deploy code with Remix using Metamask wallet
-3. (Optional) Verify contract code on Etherscan
-4. Convert hash in "batched" document from byte32 to uint256 (https://www.rapidtables.com/convert/number/hex-to-decimal.html)
-5. Mint token from Etherscan.io (https://ropsten.etherscan.io/address/0xdf3cd1486b000fad44cc52233b249740a7ce627f#writeContract)
+1. Deploy code with Remix using Metamask wallet
+1. (Optional) Verify contract code on Etherscan
+1. Convert hash in "batched" document from byte32 to uint256 (https://www.rapidtables.com/convert/number/hex-to-decimal.html)
 
 Using this workflow, the document has not been "issued" under the original OA workflow. To reflect the "issued" status, we will need to either:
 
@@ -21,18 +20,25 @@ Using this workflow, the document has not been "issued" under the original OA wo
 
 Currently, method 2 is preferred as it provides cleaner design to the smart contract.
 
-## Token Transfer Flow
+## Token Minting (Once per E-BL)
+1. Mint token from Etherscan.io (https://ropsten.etherscan.io/address/0xdf3cd1486b000fad44cc52233b249740a7ce627f#writeContract)
+
+
+## Token Transfer Flow (Once per possession change)
 1. Use Etherscan to transfer with Metamask (ie. https://ropsten.etherscan.io/token/0xdf3cd1486b000fad44cc52233b249740a7ce627f?a=2240248606332182506529263254949469315189771700379492593028330875108073422687#writeContract)
 
 ## Ownership Verification Flow
 
-This flow is for verifying that an entity who claimed to be the owner of a NFT. This flow may not be required initially if the two parties knows each other and is bounded by a separate legal contract.
+This flow is for verifying that an entity claiming to be the owner of a NFT is indeed the address in the E-BL. This flow may not be required initially if the two parties knows each other and is bound by a separate legal contract.
 
-1. Verifier generates a random message to be signed as a challenge
-2. Verifier sends the challenge to the owner and stores a copy for reference (assuming out-of-band communication)
-3. Owner signs the challenge with private key after checking that the challenge is not a transaction (https://www.myetherwallet.com/interface/sign-message)
-4. Owner sends the signed challenge back to verifier (again, assuming out-of-band communication)
-5. Verifier compares the signed message with original message and owner's public address  (https://www.myetherwallet.com/interface/verify-message or https://etherscan.io/verifySig)
+`Verifier` is the person who wants to know if Party B owns the token
+`Token Owner` is the owner of the token
+
+1. `Verifier` generates a random message to be signed as a challenge
+1. `Verifier` sends the challenge to the `Token Owner` and MUST store a copy for verification later (assuming out-of-band communication)
+1. `Token Owner` signs the challenge with his private key after checking that the challenge is not a transaction (https://www.myetherwallet.com/interface/sign-message) (Consider [ERC191](https://github.com/ethereum/EIPs/issues/191))
+4. `Token Owner` sends the signed challenge back to verifier (again, assuming out-of-band communication)
+5. `Verifier` compares the signed message with original message and owner's public address  (https://www.myetherwallet.com/interface/verify-message or https://etherscan.io/verifySig)
 
 ## Must Dos
 
@@ -42,12 +48,12 @@ Provide a reference token contract conforming to ERC721 and is "compatible" with
 
 ### Upgrade OA Platform to support NFT
 
-OA Platform should be upgrade to use `tokenStore` on top of the original `documentStore`. Detecting the different type of store will enable features that is available only to tokens/transferable records. This will require changes to the verification flow.  
+OA Platform should be upgraded to use `tokenStore` on top of the original `documentStore`. Detecting the different type of store will enable features that is available only to tokens/transferable records. This will require changes to the verification flow.  
 
 ## Should Dos
 
 ### Display Token Information in Viewer
-Viewing the transferable records in the viewer, the user should be able to verify that the record is issued by the right entity. It shows the user the domain of the isser using the [DNS-TXT](./decentralized_identity_proof_DNS-TXT.md) method after verifying it. This allows the user to know that the record is not forged.
+Viewing the transferable records in the viewer, the user should be able to verify that the record is issued by the right entity. It shows the user the domain of the issuer using the [DNS-TXT](./decentralized_identity_proof_DNS-TXT.md) method after verifying it. This allows the user to know that the record is not forged.
 
 Eg.
 Token Contract: SHIPPING-LINE-A.COM (0xab..cd)
