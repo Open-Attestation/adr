@@ -136,6 +136,17 @@ wallet: {
 }
 ```
 
+### File Storage Configuration
+
+Providing dropbox storage as one of the options to the end user. For every kind of storage (Dropbox, S3, IPFS etc...) there would be a section in the configuration file which allow users to put the token or key to access the storage. This access token or key will authorize to interact with the storage.
+
+```
+fileStorage: {
+    "name": "dropbox",
+    "key": "2f3a3uasj34i8fbefuhi4h4un4dhhbesse"
+}
+```
+
 ## Additional Note
 
 Additionally, the config file with all the above values could be stored in the browser's local storage to avoid having the user configure the application every time he uses it. 
