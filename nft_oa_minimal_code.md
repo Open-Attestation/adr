@@ -123,7 +123,7 @@ pragma solidity ^0.5.5;
 // File: contracts/GSN/Context.sol
 
 
-
+/*
  * @dev Provides information about the current execution context, including the
  * sender of the transaction and its data. While these are generally available
  * via msg.sender and msg.data, they should not be accessed in such a direct
@@ -151,7 +151,7 @@ contract Context {
 
 // File: contracts/introspection/IERC165.sol
 
-/
+/*
 
  * @dev Interface of the ERC165 standard, as defined in the
  * https://eips.ethereum.org/EIPS/eip-165[EIP].
@@ -227,7 +227,7 @@ contract IERC721 is IERC165 {
 
 // File: contracts/token/ERC721/IERC721Receiver.sol
 
-/
+/*
 
  * @title ERC721 token receiver interface
  * @dev Interface for any contract that wants to support safeTransfers
@@ -254,7 +254,7 @@ contract IERC721Receiver {
 
 // File: contracts/math/SafeMath.sol
 
-/
+/*
 
  * @dev Wrappers over Solidity's arithmetic operations with added overflow
  * checks.
@@ -415,7 +415,7 @@ library SafeMath {
 
 // File: contracts/utils/Address.sol
 
-/
+/*
 
  * @dev Collection of functions related to the address type
  */
@@ -1223,7 +1223,7 @@ contract ERC721Full is ERC721, ERC721Enumerable, ERC721Metadata {
 
 // File: contracts/access/Roles.sol
 
-/
+/*
 
  * @title Roles
  * @dev Library for managing addresses assigned to a Role.
