@@ -16,7 +16,7 @@ TradeTrust: The project that is owned by IMDA and is concerned with trade docume
   
   Schema: Refers to a specific schema that the contained `Document` has to adhere to.
   
-  Template: Instructions on how to display the data in the `Document`, could be a URL pointing to a `Renderer` or simply a path depending on OpenAttestation version
+  Template: Instructions on how to display the data in the `Document`, it is currently an URL pointing to a `Renderer`. For OpenCerts, a simple path is used for v1.4 & v1.5, prior to that, a key is used.  
   
   Renderer: A HTTP(s) endpoint that takes a `Document` and returns some browser-renderable contents (i.e HTML/CSS/JS)
   
