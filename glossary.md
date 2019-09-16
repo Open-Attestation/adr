@@ -21,3 +21,23 @@ TradeTrust: The project that is owned by IMDA and is concerned with trade docume
   Renderer: A HTTP(s) endpoint that takes a `Document` and returns some browser-renderable contents (i.e HTML/CSS/JS)
   
   RendererFrame: A component on the OpenCerts/OpenAttestation site that takes a `Document` and sends it to the `Renderer` endpoint.
+
+### OpenCerts
+
+  SSG: SkillsFuture Singapore, the owner of OpenCerts
+  
+  SSG Registry: A list of entities considered to be trustworth issuers, administered by SSG _(Sometimes called The Registry or just Registry)_
+  
+  Issuer: An entity that issues educational credentials, represented by one or more DocumentStores.
+  
+  Certificate: .OpenCert file that contains a verifiable educational credential.
+  
+  DocumentStore: An Ethereum smart contract that keeps track of OpenCerts issuances and revocations.
+  
+  DocumentStore Address: The specific Ethereum Address that a `DocumentStore` is located at.
+  
+  Collaborator: A company that is listed on our Collaborators page, they can help people set up their systems to issue OpenCerts.
+  
+
+### TradeTrust
+  <TODO>
