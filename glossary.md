@@ -24,7 +24,7 @@ TradeTrust: The project that is owned by IMDA and is concerned with trade docume
 
 ### OpenCerts
 
-  SSG: SkillsFuture Singapore, the owner of OpenCerts
+  SSG: SkillsFuture Singapore, the owner of OpenCerts accreditation registry
   
   SSG Registry: A list of entities considered to be trustworth issuers, administered by SSG _(Sometimes called The Registry or just Registry)_
   
