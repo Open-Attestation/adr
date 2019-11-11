@@ -26,7 +26,7 @@ A sample of the data will look like the following:
 {
   "data": {
     "id": "SALT:degree-1023",
-    "recipeint": {
+    "recipient": {
       "name": "SALT:Someone's name",
       "dob": "SALT:11 Nov 2011"
     },
