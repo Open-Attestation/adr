@@ -65,3 +65,44 @@ Below is the proposed data format to allow multiple issuers to use a new `proof`
   }
 }
 ```
+
+## Alternative Data Model:
+
+```json
+{
+  "data": {
+    "id": "SALT:SN-123",
+    "foo": "SALT:bar",
+    "issuers": [
+      {
+        "name": "SALT:Issuer 1"
+      },
+      {
+        "name": "SALT:Issuer 2"
+      }
+    ],
+    "proof": [
+      {
+        "type": "SALT:OpenAttestationSignature2018",
+        "method": "SALT:DOCUMENT_STORE",
+        "value": "SALT:0xABCD",
+        "identityProof": {
+          "type": "SALT:DNS-TXT",
+          "location": "SALT:example1.com",
+          "subject": "SALT:proof.value[0]"
+        }
+      },
+      {
+        "type": "SALT:OpenAttestationSignature2018",
+        "method": "SALT:DOCUMENT_STORE",
+        "value": "SALT:0xABCD",
+        "identityProof": {
+          "type": "SALT:DNS-TXT",
+          "location": "SALT:example2.com",
+          "subject": "SALT:proof.value[1]"
+        }
+      }
+    ]
+  }
+}
+```
