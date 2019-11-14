@@ -62,7 +62,7 @@ If a clerk is expected to perform data entry (as oppose to dropping documents as
 
 1. Render a form
 2. Transform inputs from a form into structured data
-3. Ties a input field to a token address (if the output is a token)
+3. Ties a input value to a token address (if the output is a token)
 
 This presents a familiar interface for the clerk to perform data entry on a form.
 
