@@ -42,9 +42,13 @@ Decoded Resource (after `?resource=`):
 
 The proposed solution is to use universal/deep links to address the namespace portion. This allow us to :
 
-1. Provide an application (think universal router) at openattestation.com to handle the action if the user scans the code using a standard QR code scanner on mobile and redirect to a specific client
-2. Allow any web client (tradetrust.io or opencerts.io) to scan and process the message at the path `/resource`
+1. Provide an application (think universal router) at openattestation.com to handle the action if the user scans the code using a standard QR code scanner on mobile and redirect to a specific client, represented in `redirect`.
+2. Allow any web client (tradetrust.io or opencerts.io) to scan and process the message at the path `/resource?=<encoded-json>`
 3. Provide [deep linking](https://docs.expo.io/versions/latest/workflow/linking/) opportunities for iOS/Android app to open the correct application on the phone to process the action.
+
+### Considerations
+
+1. The decryption key is now in the path instead of appearing after `#`. If the connection is not secure, the key might be leaked to mitm. 
 
 ## Review on Current State
 
