@@ -8,7 +8,7 @@ Draft
 
 The goal of the universal transfer method is to ensure that a standard is available to all clients interacting with OA documents. This allows different clients to be itneropable with one another. The standard is extremely important if we want to provide a client like an [identity wallet](https://github.com/Open-Attestation/identity-wallet) that supports all kinds of OA document.
 
-Such important considerations of the transfer method:
+Important considerations of the transfer method:
 
 - Reference to resource (uri)
 - Encrypted resource (key)
