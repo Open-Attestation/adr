@@ -58,7 +58,7 @@ Deliberatly bad UX in the correct flow does not prevent fake QR codes frome exis
 1. The decryption key is now in the path instead of appearing after `#`. If the connection is not secure, the key might be leaked to mitm.
 2. W3C Verifiable Claim's presentation model might be better to represent intent. However, for this implementation we are not doing that because of the following reasons:
 - The `termsOfUse` model is not well defined yet
-- We do not have a "wallet" for the credential presenter to sign on the `presentation` object 
+- We do not have a "wallet" for the credential presenter to sign on the `presentation` object ([ref](https://w3c.github.io/vc-data-model/#concrete-lifecycle-example))
 
 ### Implementation details
 
