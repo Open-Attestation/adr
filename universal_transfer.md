@@ -23,7 +23,7 @@ Sample QR code:
 ![Proposed QR](assets/universal_transfer/proposed-qr.png)
 
 ```
-https://openattestation.com/?resource=%7B%22uri%22%3A%22https%3A%2F%2Fsomehostedresources.com%2Fdoc%2F7de3bce4-de62-4628-914e-97d41e642582%22%2C%22enc%22%3A%7B%22type%22%3A%22OPEN-ATTESTATION-TYPE-1%22%2C%22key%22%3A%22aa57eb519fd3c63c42c2f2697e8957198b56fc945c4db18b480c07d2e6485a93%22%7D%2C%22permittedAction%22%3A%5B%22VIEW%22%2C%22STORE%22%5D%7D
+https://openattestation.com/?resource=%7B%22uri%22:%22https://somehostedresources.com/doc/7de3bce4-de62-4628-914e-97d41e642582%22,%22key%22:%22aa57eb519fd3c63c42c2f2697e8957198b56fc945c4db18b480c07d2e6485a93%22,%22permittedAction%22:%5B%22VIEW%22,%22STORE%22%5D,%22redirect%22:%22https://tradetrust.io/%22%7D
 ```
 
 Decoded Resource (after `?resource=`):
@@ -31,10 +31,7 @@ Decoded Resource (after `?resource=`):
 ```json
 {
   "uri": "https://somehostedresources.com/doc/7de3bce4-de62-4628-914e-97d41e642582",
-  "enc": {
-    "type": "OPEN-ATTESTATION-TYPE-1",
-    "key": "aa57eb519fd3c63c42c2f2697e8957198b56fc945c4db18b480c07d2e6485a93"
-  },
+  "key": "aa57eb519fd3c63c42c2f2697e8957198b56fc945c4db18b480c07d2e6485a93",
   "permittedAction": ["VIEW", "STORE"],
   "redirect": "https://tradetrust.io/"
 }
@@ -42,13 +39,27 @@ Decoded Resource (after `?resource=`):
 
 The proposed solution is to use universal/deep links to address the namespace portion. This allow us to :
 
-1. Provide an application (think universal router) at openattestation.com to handle the action if the user scans the code using a standard QR code scanner on mobile and redirect to a specific client, represented in `redirect`.
+1. Provide an application (think universal router) at openattestation.com to handle the action if the user scans the code using a standard QR code scanner on mobile and redirect to a specific client, represented in `redirect`. --or-- Link to a page to get user to download the standard wallet app, with option to redirect to the web client if they click on that.
 2. Allow any web client (tradetrust.io or opencerts.io) to scan and process the message at the path `/resource?=<encoded-json>`
 3. Provide [deep linking](https://docs.expo.io/versions/latest/workflow/linking/) opportunities for iOS/Android app to open the correct application on the phone to process the action.
 
-### Considerations
+### User Flow
 
-1. The decryption key is now in the path instead of appearing after `#`. If the connection is not secure, the key might be leaked to mitm. 
+![User Flow](assets/universal_transfer/user-flow.png)
+
+#### Note on deliberately bad UX to deter fake QR codes
+
+One method previously brought up to prevent fake websites by using QR code that does not link to a website (ie tradetrust:// instead of https://) does not work when the user faces the QR code the first time. The user will not know that they are not supposed to be brought to a website directly (with the tradetrust:// link). When a fake document with a fake QR code (ie https://tradetrust.fakewebsite.io) presents itself, the user will still be brought there. 
+
+Deliberatly bad UX in the correct flow does not prevent fake QR codes frome existing. The difference is in educating the user to recognise the right websites/tools to verify documents. For that reason, the preference is to have a better user experience when they scan a valid QR code to make use of the deeplink/redirect model. 
+
+### Considerations in this implementation
+
+1. The decryption key is now in the path instead of appearing after `#`. If the connection is not secure, the key might be leaked to mitm.
+
+### Implementation details
+
+1. Consider using lossless compression with [CBOR](https://cbor.io/)
 
 ## Review on Current State
 
