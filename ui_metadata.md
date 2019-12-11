@@ -58,3 +58,9 @@ With the above metadata, client applications, such as a OA Identity Wallet will 
 
 - What fields they are sharing with others, in a human readable format
 - Selection of fields that they can choose to include/exclude
+
+## Concerns
+
+How should we label objects in an array? 
+How do we allow users to remove an item in an array?
+Should we use this only for the normal-intermediate user while allowing advanced users to select any key-value pairs to show/hide?
