@@ -61,6 +61,6 @@ With the above metadata, client applications, such as a OA Identity Wallet will 
 
 ## Concerns
 
-How should we label objects in an array? 
-How do we allow users to remove an item in an array?
-Should we use this only for the normal-intermediate user while allowing advanced users to select any key-value pairs to show/hide?
+- How should we label objects in an array? 
+- How do we allow users to remove an item in an array?
+- Should we use this only for the normal-intermediate user while allowing advanced users to select any key-value pairs to show/hide?
