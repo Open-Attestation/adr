@@ -49,3 +49,12 @@ Sample UI metadata:
   }
 }
 ```
+
+## Sample Usage
+
+![Example Application](assets/ui_metadata/example.png)
+
+With the above metadata, client applications, such as a OA Identity Wallet will be able to show to users:
+
+- What fields they are sharing with others, in a human readable format
+- Selection of fields that they can choose to include/exclude
