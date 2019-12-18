@@ -1,0 +1,115 @@
+[1mdiff --git a/README.md b/README.md[m
+[1mindex ba175d9..61c5a4e 100644[m
+[1m--- a/README.md[m
+[1m+++ b/README.md[m
+[36m@@ -1,2 +1,14 @@[m
+ # adr[m
+[32m+[m
+ Architectural Decision Records (ADRs) for OpenAttestation/OpenCerts/TradeTrust[m
+[32m+[m
+[32m+[m[32m## Records[m
+[32m+[m
+[32m+[m[32m| Poposal                                                                             | Status   | Implementation              |[m
+[32m+[m[32m| ----------------------------------------------------------------------------------- | -------- | --------------------------- |[m
+[32m+[m[32m| [Universal Dapp](./configurable_dapp_usability.md)                                  | Accepted | Tradetrust                  |[m
+[32m+[m[32m| [Decentralised Identity Proof - DNS-TXT](./decentralized_identity_proof_DNS-TXT.md) | Accepted | OpenAttestation, Tradetrust |[m
+[32m+[m[32m| [NFT(ERC721) MVP](./nft_oa_minimal_code.md)                                         | Accepted | Tradetrust                  |[m
+[32m+[m[32m| [Universal Transfer Protocol](./universal_transfer.md)                              | Accepted | IdentityWallet              |[m
+[32m+[m[32m| [UI Metadata](./ui_metadata.md)                                                     | Proposed | IdentityWallet              |[m
+[32m+[m[32m| [OpenAttestation Universal Verifier](./oa-verifier.md)                              | Draft    | OpenAttestation             |[m
+[1mdiff --git a/ui_metadata.md b/ui_metadata.md[m
+[1mindex 6b5fee7..0ee0bd2 100644[m
+[1m--- a/ui_metadata.md[m
+[1m+++ b/ui_metadata.md[m
+[36m@@ -38,7 +38,9 @@[m [mSample UI metadata:[m
+       "recipient.nric": "NRIC",[m
+       "recipient.dob": "Date of Birth",[m
+       "recipient.photo": "Photograph",[m
+[31m-      "ratings": "Ratings"[m
+[32m+[m[32m      "ratings[x].name": "Rating Name",[m
+[32m+[m[32m      "ratings[x].code": "Rating Code",[m
+[32m+[m[32m      "ratings[x].expiryDate": "Rating Expiry"[m
+     },[m
+     "profiles": [[m
+       {[m
+[1mdiff --git a/universal_transfer.md b/universal_transfer.md[m
+[1mindex 5545ec4..9ee6473 100644[m
+[1m--- a/universal_transfer.md[m
+[1m+++ b/universal_transfer.md[m
+[36m@@ -2,7 +2,7 @@[m
+ [m
+ ## Status[m
+ [m
+[31m-Draft[m
+[32m+[m[32mAccepted[m
+ [m
+ ## Rationale[m
+ [m
+[36m@@ -23,16 +23,16 @@[m [mSample QR code:[m
+ ![Proposed QR](assets/universal_transfer/proposed-qr.png)[m
+ [m
+ ```[m
+[31m-https://openattestation.com/?resource=%7B%22uri%22:%22https://somehostedresources.com/doc/7de3bce4-de62-4628-914e-97d41e642582%22,%22key%22:%22aa57eb519fd3c63c42c2f2697e8957198b56fc945c4db18b480c07d2e6485a93%22,%22permittedAction%22:%5B%22VIEW%22,%22STORE%22%5D,%22redirect%22:%22https://tradetrust.io/%22%7D[m
+[32m+[m[32mhttps://openattestation.com/action?document=%7B%22uri%22:%22https://somehostedresources.com/doc/7de3bce4-de62-4628-914e-97d41e642582%22,%22key%22:%22aa57eb519fd3c63c42c2f2697e8957198b56fc945c4db18b480c07d2e6485a93%22,%22permittedAction%22:%5B%22STORE%22%5D,%22redirect%22:%22https://tradetrust.io/%22%7D[m
+ ```[m
+ [m
+[31m-Decoded Resource (after `?resource=`):[m
+[32m+[m[32mDecoded Resource (after `?action=`):[m
+ [m
+ ```json[m
+ {[m
+   "uri": "https://somehostedresources.com/doc/7de3bce4-de62-4628-914e-97d41e642582",[m
+   "key": "aa57eb519fd3c63c42c2f2697e8957198b56fc945c4db18b480c07d2e6485a93",[m
+[31m-  "permittedAction": ["VIEW", "STORE"],[m
+[32m+[m[32m  "permittedAction": ["STORE"],[m
+   "redirect": "https://tradetrust.io/"[m
+ }[m
+ ```[m
+[36m@@ -40,7 +40,7 @@[m [mDecoded Resource (after `?resource=`):[m
+ The proposed solution is to use universal/deep links to address the namespace portion. This allow us to :[m
+ [m
+ 1. Provide an application (think universal router) at openattestation.com to handle the action if the user scans the code using a standard QR code scanner on mobile and redirect to a specific client, represented in `redirect`. --or-- Link to a page to get user to download the standard wallet app, with option to redirect to the web client if they click on that.[m
+[31m-2. Allow any web client (tradetrust.io or opencerts.io) to scan and process the message at the path `/resource?=<encoded-json>`[m
+[32m+[m[32m2. Allow any web client (tradetrust.io or opencerts.io) to scan and process the message at the path `/action?document=<encoded-json>`[m
+ 3. Provide [deep linking](https://docs.expo.io/versions/latest/workflow/linking/) opportunities for iOS/Android app to open the correct application on the phone to process the action.[m
+ [m
+ ### User Flow[m
+[36m@@ -49,20 +49,34 @@[m [mThe proposed solution is to use universal/deep links to address the namespace po[m
+ [m
+ #### Note on deliberately bad UX to deter fake QR codes[m
+ [m
+[31m-One method previously brought up to prevent fake websites by using QR code that does not link to a website (ie tradetrust:// instead of https://) does not work when the user faces the QR code the first time. The user will not know that they are not supposed to be brought to a website directly (with the tradetrust:// link). When a fake document with a fake QR code (ie https://tradetrust.fakewebsite.io) presents itself, the user will still be brought there. [m
+[32m+[m[32mOne method previously brought up to prevent fake websites by using QR code that does not link to a website (ie tradetrust:// instead of https://) does not work when the user faces the QR code the first time. The user will not know that they are not supposed to be brought to a website directly (with the tradetrust:// link). When a fake document with a fake QR code (ie https://tradetrust.fakewebsite.io) presents itself, the user will still be brought there.[m
+ [m
+[31m-Deliberatly bad UX in the correct flow does not prevent fake QR codes frome existing. The difference is in educating the user to recognise the right websites/tools to verify documents. For that reason, the preference is to have a better user experience when they scan a valid QR code to make use of the deeplink/redirect model. [m
+[32m+[m[32mDeliberatly bad UX in the correct flow does not prevent fake QR codes frome existing. The difference is in educating the user to recognise the right websites/tools to verify documents. For that reason, the preference is to have a better user experience when they scan a valid QR code to make use of the deeplink/redirect model.[m
+ [m
+ ### Considerations in this implementation[m
+ [m
+ 1. The decryption key is now in the path instead of appearing after `#`. If the connection is not secure, the key might be leaked to mitm.[m
+ 2. W3C Verifiable Claim's presentation model might be better to represent intent. However, for this implementation we are not doing that because of the following reasons:[m
+[32m+[m
+ - The `termsOfUse` model is not well defined yet[m
+ - We do not have a "wallet" for the credential presenter to sign on the `presentation` object ([ref](https://w3c.github.io/vc-data-model/#concrete-lifecycle-example))[m
+ [m
+[31m-### Implementation details[m
+[32m+[m[32m## Generalised Actions[m
+[32m+[m
+[32m+[m[32mFrom the above example, we can generalise the protocol to support other types of actions in the future, eg document presentation (w3c).[m
+[32m+[m
+[32m+[m[32mGenerally speaking, all action will be prefixed with `https://openattestation.com/action?`. The `field` of query string will then be the action type while the `value` of the query string will be the corresponding action, in url encoded format.[m
+[32m+[m
+[32m+[m[32mTherefore `action?actionType={foo:"bar"}` (the values should be url encoded) will translate into the following action to be processed by the client application:[m
+ [m
+[31m-1. Consider using lossless compression with [CBOR](https://cbor.io/)[m
+[32m+[m[32m```json[m
+[32m+[m[32m{[m
+[32m+[m[32m  "type": "actionType",[m
+[32m+[m[32m  "payload": {[m
+[32m+[m[32m    "foo": "bar"[m
+[32m+[m[32m  }[m
+[32m+[m[32m}[m
+[32m+[m[32m```[m
+ [m
+ ## Review on Current State[m
+ [m

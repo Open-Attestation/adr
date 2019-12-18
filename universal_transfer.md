@@ -2,7 +2,7 @@
 
 ## Status
 
-Draft
+Accepted
 
 ## Rationale
 
@@ -23,16 +23,16 @@ Sample QR code:
 ![Proposed QR](assets/universal_transfer/proposed-qr.png)
 
 ```
-https://openattestation.com/?resource=%7B%22uri%22:%22https://somehostedresources.com/doc/7de3bce4-de62-4628-914e-97d41e642582%22,%22key%22:%22aa57eb519fd3c63c42c2f2697e8957198b56fc945c4db18b480c07d2e6485a93%22,%22permittedAction%22:%5B%22VIEW%22,%22STORE%22%5D,%22redirect%22:%22https://tradetrust.io/%22%7D
+https://openattestation.com/action?document=%7B%22uri%22:%22https://somehostedresources.com/doc/7de3bce4-de62-4628-914e-97d41e642582%22,%22key%22:%22aa57eb519fd3c63c42c2f2697e8957198b56fc945c4db18b480c07d2e6485a93%22,%22permittedAction%22:%5B%22STORE%22%5D,%22redirect%22:%22https://tradetrust.io/%22%7D
 ```
 
-Decoded Resource (after `?resource=`):
+Decoded Resource (after `?action=`):
 
 ```json
 {
   "uri": "https://somehostedresources.com/doc/7de3bce4-de62-4628-914e-97d41e642582",
   "key": "aa57eb519fd3c63c42c2f2697e8957198b56fc945c4db18b480c07d2e6485a93",
-  "permittedAction": ["VIEW", "STORE"],
+  "permittedAction": ["STORE"],
   "redirect": "https://tradetrust.io/"
 }
 ```
@@ -40,7 +40,7 @@ Decoded Resource (after `?resource=`):
 The proposed solution is to use universal/deep links to address the namespace portion. This allow us to :
 
 1. Provide an application (think universal router) at openattestation.com to handle the action if the user scans the code using a standard QR code scanner on mobile and redirect to a specific client, represented in `redirect`. --or-- Link to a page to get user to download the standard wallet app, with option to redirect to the web client if they click on that.
-2. Allow any web client (tradetrust.io or opencerts.io) to scan and process the message at the path `/resource?=<encoded-json>`
+2. Allow any web client (tradetrust.io or opencerts.io) to scan and process the message at the path `/action?document=<encoded-json>`
 3. Provide [deep linking](https://docs.expo.io/versions/latest/workflow/linking/) opportunities for iOS/Android app to open the correct application on the phone to process the action.
 
 ### User Flow
@@ -49,20 +49,34 @@ The proposed solution is to use universal/deep links to address the namespace po
 
 #### Note on deliberately bad UX to deter fake QR codes
 
-One method previously brought up to prevent fake websites by using QR code that does not link to a website (ie tradetrust:// instead of https://) does not work when the user faces the QR code the first time. The user will not know that they are not supposed to be brought to a website directly (with the tradetrust:// link). When a fake document with a fake QR code (ie https://tradetrust.fakewebsite.io) presents itself, the user will still be brought there. 
+One method previously brought up to prevent fake websites by using QR code that does not link to a website (ie tradetrust:// instead of https://) does not work when the user faces the QR code the first time. The user will not know that they are not supposed to be brought to a website directly (with the tradetrust:// link). When a fake document with a fake QR code (ie https://tradetrust.fakewebsite.io) presents itself, the user will still be brought there.
 
-Deliberatly bad UX in the correct flow does not prevent fake QR codes frome existing. The difference is in educating the user to recognise the right websites/tools to verify documents. For that reason, the preference is to have a better user experience when they scan a valid QR code to make use of the deeplink/redirect model. 
+Deliberatly bad UX in the correct flow does not prevent fake QR codes frome existing. The difference is in educating the user to recognise the right websites/tools to verify documents. For that reason, the preference is to have a better user experience when they scan a valid QR code to make use of the deeplink/redirect model.
 
 ### Considerations in this implementation
 
 1. The decryption key is now in the path instead of appearing after `#`. If the connection is not secure, the key might be leaked to mitm.
 2. W3C Verifiable Claim's presentation model might be better to represent intent. However, for this implementation we are not doing that because of the following reasons:
+
 - The `termsOfUse` model is not well defined yet
 - We do not have a "wallet" for the credential presenter to sign on the `presentation` object ([ref](https://w3c.github.io/vc-data-model/#concrete-lifecycle-example))
 
-### Implementation details
+## Generalised Actions
 
-1. Consider using lossless compression with [CBOR](https://cbor.io/)
+From the above example, we can generalise the protocol to support other types of actions in the future, eg document presentation (w3c).
+
+Generally speaking, all action will be prefixed with `https://openattestation.com/action?`. The `field` of query string will then be the action type while the `value` of the query string will be the corresponding action, in url encoded format.
+
+Therefore `action?actionType={foo:"bar"}` (the values should be url encoded) will translate into the following action to be processed by the client application:
+
+```json
+{
+  "type": "actionType",
+  "payload": {
+    "foo": "bar"
+  }
+}
+```
 
 ## Review on Current State
 

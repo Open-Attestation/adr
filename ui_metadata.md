@@ -38,7 +38,9 @@ Sample UI metadata:
       "recipient.nric": "NRIC",
       "recipient.dob": "Date of Birth",
       "recipient.photo": "Photograph",
-      "ratings": "Ratings"
+      "ratings[x].name": "Rating Name",
+      "ratings[x].code": "Rating Code",
+      "ratings[x].expiryDate": "Rating Expiry"
     },
     "profiles": [
       {
