@@ -11,4 +11,4 @@ Architectural Decision Records (ADRs) for OpenAttestation/OpenCerts/TradeTrust
 | [NFT(ERC721) MVP](./nft_oa_minimal_code.md)                                         | Accepted | Tradetrust                  |
 | [Universal Transfer Protocol](./universal_transfer.md)                              | Accepted | IdentityWallet              |
 | [UI Metadata](./ui_metadata.md)                                                     | Proposed | IdentityWallet              |
-| [OpenAttestation Universal Verifier](./oa-verifier.md)                              | Draft    | OpenAttestation             |
+| [OpenAttestation Universal Verifier](./verifier.md)                              | Draft    | OpenAttestation             |
