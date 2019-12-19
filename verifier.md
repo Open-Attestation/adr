@@ -16,9 +16,16 @@ The purpose of the verifier is to provide a generic verification method to verif
 
 A verifier is made up of multiple `Verification Methods`. In the diagram above, `OpenAttestationDnsTxt`, `OpenAttestationEthereumDocumentStoreIssued` and `OpenAttestationHash` are examples of `Verification Methods` provided.
 
-The role of a verification method is to `verify` the OA document if it is valid. Since there are many types and versions of OA document, not all test should run against all types of OA document. For that reason, a `test` method is also defined to test if a method should run against a document. If the method is incompatible with the document type, it should be `skip` the method.
+The role of a verification method is to verify the OA document is valid against specific criterias. Since there are many types and versions of OA document, not all test should run against all types of OA document. For that reason, a `test` method is also defined to test if a method should run against a document. If the method is incompatible with the document type, it should `skip` the method.
 
-As a result, a verification method should implement 3 abstract method: `verify`, `test` and `skip`.
+As a result, a verification method should implement 3 abstract methods: `verify`, `test` and `skip`.
+
+The verification method should return a `VerificationFragment` which states the status of the verification. The `status` key can have the following values:
+
+- `VALID`: when the verification is successful
+- `INVALID`: when the verification is unsuccessful
+- `ERROR`: when an unexpected error is met
+- `SKIPPED`: when the verification was skipped by the manager
 
 #### test(document: Document): boolean
 
@@ -85,14 +92,14 @@ An example `VerificationFragment` of a failed test:
 }
 ```
 
-### Verification Classes
+### Verification Types
 
-A `Verification Class` is a class label to a verification method. It specifies what type of verification the method is performing. The diagram above shows the 3 default verification classes: `ISSUER_IDENTITY`, `DOCUMENT_INTEGRITY` and `DOCUMENT_STATUS`.
+A `Verification Type` is a type label to a verification method. It specifies what type of verification the method is performing. The diagram above shows the 3 default verification types: `ISSUER_IDENTITY`, `DOCUMENT_INTEGRITY` and `DOCUMENT_STATUS`.
 
-For the validity of the verification class to be true, the requirements must be met:
+For the validity of the verification type to be true, the requirements must be met:
 
-1. At least one method in that class should return `VALID` as the status.
-1. All methods in the class should return either `VALID` or `SKIPPED` as the status.
+1. At least one method in that type should return `VALID` as the status.
+1. All methods in the type should return either `VALID` or `SKIPPED` as the status.
 
 ### Verifier
 
