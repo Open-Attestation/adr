@@ -107,7 +107,7 @@ The verifier is a function used to verify any OpenAttestation document. It retur
 
 From the `VerificationFragments` we can then determine if the OA document is valid. The OA document is vaPprevlid when all `Verification Types` has valid statuses.
 
-## Default Methods
+## Default Verification Types and Methods
 
 ### Document Integrity (DOCUMENT_INTEGRITY)
 
