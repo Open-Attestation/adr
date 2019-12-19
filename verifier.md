@@ -35,7 +35,7 @@ In the case that the test passes, we should run the `verify` function. Otherwise
 
 #### skip(): VerificationFragment
 
-This function should be ran when the verification method is skipped for the given OA document. It will return the skipped `VerificationFragment` for the test.
+This function should be run when the verification method is skipped for the given OA document. It will return the skipped `VerificationFragment` for the test.
 
 An example of `VerificationFragment` that skips the DNS-TXT verification:
 
@@ -50,7 +50,7 @@ An example of `VerificationFragment` that skips the DNS-TXT verification:
 
 #### verify(document: Document): VerificationFragment
 
-This function should be ran when the test passes. Running this function will execute the necessary computation to determine if the document passes the verification method.
+This function should be run after the test passes. Running this function will execute the necessary computation to determine if the document passes the verification method.
 
 An example `VerificationFragment` of a passing test:
 
