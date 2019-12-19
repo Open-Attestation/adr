@@ -16,7 +16,7 @@ The purpose of the verifier is to provide a generic verification method to verif
 
 A verifier is made up of multiple `Verification Methods`. In the diagram above, `OpenAttestationDnsTxt`, `OpenAttestationEthereumDocumentStoreIssued` and `OpenAttestationHash` are examples of `Verification Methods` provided.
 
-The role of a verification method is to verify the OA document is valid against specific criterias. Since there are many types and versions of OA document, not all test should run against all types of OA document. For that reason, a `test` method is also defined to test if a method should run against a document. If the method is incompatible with the document type, it should `skip` the method.
+The role of a verification method is to verify the OA document is valid against specific criteria. Since there are many types and versions of OA document, not all test should run against all types of OA document. For that reason, a `test` method is also defined to test if a method should run against a document. If the method is incompatible with the document type, it should `skip` the method.
 
 As a result, a verification method should implement 3 abstract methods: `verify`, `test` and `skip`.
 
@@ -105,7 +105,7 @@ For the validity of the verification type to be true, the requirements must be m
 
 The verifier is a function used to verify any OpenAttestation document. It returns a set of `VerificationFragment` from the different verification methods.
 
-From the `VerificationFragments` we can then determine if the OA document is valid. The OA document is vaPprevlid when all `Verification Types` has valid statuses.
+From the `VerificationFragments` we can then determine if the OA document is valid. The OA document is valid when all `Verification Types` has valid statuses.
 
 ## Default Verification Types and Methods
 
