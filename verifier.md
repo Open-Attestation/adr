@@ -105,23 +105,89 @@ For the validity of the verification type to be true, the requirements must be m
 
 The verifier is a function used to verify any OpenAttestation document. It returns a set of `VerificationFragment` from the different verification methods.
 
-From the `VerificationFragments` we can then determine if the OA document is valid. The OA document is valid when all `Verification Classes` has valid statuses.
+From the `VerificationFragments` we can then determine if the OA document is valid. The OA document is vaPprevlid when all `Verification Types` has valid statuses.
 
 ## Default Methods
 
-### Document Integrity
+### Document Integrity (DOCUMENT_INTEGRITY)
+
+The `DOCUMENT_INTEGRITY` type of verification methods ensure that the content of the issued document has not been modified since the document has been issued, with exception of data which has been removed using built-in obfuscation mechanism.
 
 #### OpenAttestationHash
 
-### Document Status
+The `OpenAttestationHash` method checks the integrity of the document using the `OpenAttestationSignature2018` method by digesting the content of the OA document and comparing it with the document's `targetHash`.
+
+In addition, if the `targetHash` does not match the `merkleRoot` of the document, the function also checks that the `targetHash` resolves to the `merkleRoot` using the given `proofs`.
+
+### Document Status (DOCUMENT_STATUS)
+
+The `DOCUMENT_STATUS` type of verification methods checks that the document has been issued and that it's issuance status is in good standing. Methods of these types generally verifies the issuance status against a record maintained externally, ie Records on a Blockchain or API endpoints.
 
 #### OpenAttestationEthereumDocumentStoreIssued
 
+The `OpenAttestationEthereumDocumentStoreIssued` checks the issuance status of the document using `OpenAttestationSignature2018` with `DOCUMENT_STORE` or `TOKEN_REGISTRY` methods.
+
+Signature of OA Document using this method:
+
+```json
+{
+  "proof": {
+    "type": "OpenAttestationSignature2018",
+    "method": "DOCUMENT_STORE",
+    "value": "0x9178F546D3FF57D7A6352bD61B80cCCD46199C2d"
+  }
+}
+```
+
+Such document uses a smart contract to store the issuance status of the document.
+
+In the case of `DOCUMENT_STORE` smart contract, the check calls the method `isIssued(merkleRoot)` implemented on the Ethereum smart contract. It returns a valid `VerificationFragment` if the merkle root of the document has been marked as issued.
+
+In the case of `TOKEN_REGISTRY` smart contract, the check calls the method `ownerOf(targetHash)` implemented on the Ethereum smart contract. It returns a valid `VerificationFragment` if the owner of the document is non-zero.
+
 #### OpenAttestationEthereumDocumentStoreRevoked
 
-### Issuer Identity
+The `OpenAttestationEthereumDocumentStoreRevoked` checks the revocation status of the document using `OpenAttestationSignature2018` with `DOCUMENT_STORE` or `TOKEN_REGISTRY` methods, similar to `OpenAttestationEthereumDocumentStoreIssued`.
+
+In the case of `DOCUMENT_STORE` smart contract, the check calls the method `isRevoked(merkleRoot)` implemented on the Ethereum smart contract. It returns a valid `VerificationFragment` if the merkle root of the document has not been marked as revoked.
+
+### Issuer Identity (ISSUER_IDENTITY)
+
+The `ISSUER_IDENTITY` type of verification methods checks and return the identity of the issuer. Methods of these types generally verify the identity of the issuer against a decentralised identity provider (ie DID, DNS, etc) or some centrally managed identity registry (ie Singapore's OpenCerts Registry, Citizen Identity Registry, Business Identity Registry, etc).
 
 #### OpenAttestationDnsTxt
+
+The `OpenAttestationDnsTxt` method checks the identity of a document issuer using the `DNS-TXT` identity proof mechanism. 
+
+The sample provided below shows a document which claims that `openattestation.com` is the owner of the smart contract `0x9178F546D3FF57D7A6352bD61B80cCCD46199C2d`, which in turn issued the said document:
+
+```json
+{
+  "issuer": {
+    "id": "https://openattestation.com",
+    "name": "Open Attestation",
+    "identityProof": {
+      "type": "DNS-TXT",
+      "location": "openattestation.com"
+    }
+  },
+  "proof": {
+    "type": "OpenAttestationSignature2018",
+    "method": "DOCUMENT_STORE",
+    "value": "0x9178F546D3FF57D7A6352bD61B80cCCD46199C2d"
+  }
+}
+```
+
+The method checks against the DNS record of the domain to confirm the claimed relationship. A sample TXT record on `openattestation.com` to prove ownership of the contract `0x9178F546D3FF57D7A6352bD61B80cCCD46199C2d` on Ethereum Ropsten network is provided below:
+
+```
+openatts net=ethereum netId=3 addr=0x9178F546D3FF57D7A6352bD61B80cCCD46199C2d
+```
+
+Upon confirming that the matching DNS TXT record on the domain, the verification method returns a valid `VerificationFragment` as the result.
+
+In depth discussion of DNS-TXT method is described [in this blog post](https://blog.gds-gov.tech/opencerts-2-0-decentralised-issuer-identity-verification-fb7e2cae8295)
 
 ## Usage
 
@@ -144,3 +210,9 @@ const verificationFragments = verificationBuilder(document, [
 ]);
 const verified = isVerified(verificationFragments);
 ```
+
+### Todo
+
+Write about:
+
+- `OpenAttestationSignature2018`
