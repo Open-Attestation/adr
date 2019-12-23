@@ -10,6 +10,8 @@ Selective disclosure allows for the holder of OA documents to present subsets of
 
 To achieve this, we compute a hash over individually hashed and salted key-value pairs. During obfuscation, we will hash the salted key-value pair and store the hash in another location of the document.
 
+![Overview](./assets/selective_disclosure/overview.png)
+
 During integrity verification, we will recompute the hash of the document by:
 
 1. Nomalising the document into individual key-value pairs
