@@ -6,7 +6,7 @@ Accepted
 
 ## Goal
 
-Selective disclosure allows for holder of OA documents present subsets of the document to be verified. It does so by allowing users to obfuscated data fields without compromising the integrity of the document.
+Selective disclosure allows for the holder of OA documents to present subsets of the document to be verified. It does so by allowing users to obfuscated data fields without compromising the integrity of the document.
 
 To achieve this, we compute a hash over individually hashed and salted key-value pairs. During obfuscation, we will hash the salted key-value pair and store the hash in another location of the document.
 
@@ -14,7 +14,7 @@ During integrity verification, we will recompute the hash of the document by:
 
 1. Nomalising the document into individual key-value pairs
 2. Hashing each of the individual key-value pairs
-3. Compute a hash (merkle root) of all the hashes
+3. Compute the target hash of the document
 
 In this document, we will describe the steps to:
 
@@ -26,9 +26,9 @@ In this document, we will describe the steps to:
 
 ### Salting the data
 
-To generate a OA document, through a process knwon as `document wrapping`, each individual value is converted from its primitive type to a string with a uuid, the data type and the original value.
+To generate an OA document, through a process known as `document wrapping`, each value is converted from its primitive type to a string with a UUID, the data type and the original value.
 
-The uuid prevents rainbow table attacks on the value after it has been obfuscated and the type will help disambiguate the original data type.
+The UUID prevents rainbow table attacks on the value after it has been obfuscated and the type will help disambiguate the original data type.
 
 Sample raw data input:
 
@@ -99,7 +99,7 @@ Output after salt:
 
 ### Computing individual hashes
 
-After the individual values has been salted, the entire data object is flattened, while preserving the hierarchial structure of the data within the individual keys.
+After the individual values have been salted, the entire data object is flattened, while preserving the hierarchical structure of the data within the individual keys.
 
 In our implementation the library [flatley](https://www.npmjs.com/package/flatley) is used to flatten the object and [js-sha3](https://www.npmjs.com/package/js-sha3) is used to compute the `keccak256` hash.
 
@@ -129,7 +129,7 @@ Output after flattening:
 }
 ```
 
-Once the data object has been salted and flattened, each individual key-value pair will be hashed.
+Once the data object has been salted and flattened, each key-value pair will be hashed.
 
 In the example above, we will apply the `keccak256` hash on the object `{"key4.key41":"7e3b72f8-e521-4892-a26c-b56d3e2ab5cf:string:value4.1"}` which will yield `c3edad333f0829b92a82cd3c09b7795b0f00f07dfbbfc5ff8779272d1eaba3a8`.
 
