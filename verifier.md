@@ -125,7 +125,7 @@ The `DOCUMENT_STATUS` type of verification methods checks that the document has 
 
 #### OpenAttestationEthereumDocumentStoreIssued
 
-The `OpenAttestationEthereumDocumentStoreIssued` checks the issuance status of the document using `OpenAttestationSignature2018` with `DOCUMENT_STORE` or `TOKEN_REGISTRY` methods.
+The `OpenAttestationEthereumDocumentStoreIssued` checks the issuance status of the document using `OpenAttestationSignature2018` with `DOCUMENT_STORE` methods.
 
 Signature of OA Document using this method:
 
@@ -141,15 +141,19 @@ Signature of OA Document using this method:
 
 Such document uses a smart contract to store the issuance status of the document.
 
-In the case of `DOCUMENT_STORE` smart contract, the check calls the method `isIssued(merkleRoot)` implemented on the Ethereum smart contract. It returns a valid `VerificationFragment` if the merkle root of the document has been marked as issued.
-
-In the case of `TOKEN_REGISTRY` smart contract, the check calls the method `ownerOf(targetHash)` implemented on the Ethereum smart contract. It returns a valid `VerificationFragment` if the owner of the document is non-zero.
+The check calls the method `isIssued(merkleRoot)` implemented on the Ethereum smart contract. It returns a valid `VerificationFragment` if the merkle root of the document has been marked as issued.
 
 #### OpenAttestationEthereumDocumentStoreRevoked
 
-The `OpenAttestationEthereumDocumentStoreRevoked` checks the revocation status of the document using `OpenAttestationSignature2018` with `DOCUMENT_STORE` or `TOKEN_REGISTRY` methods, similar to `OpenAttestationEthereumDocumentStoreIssued`.
+The `OpenAttestationEthereumDocumentStoreRevoked` checks the revocation status of the document using `OpenAttestationSignature2018` with `DOCUMENT_STORE` methods, similar to `OpenAttestationEthereumDocumentStoreIssued`.
 
 In the case of `DOCUMENT_STORE` smart contract, the check calls the method `isRevoked(merkleRoot)` implemented on the Ethereum smart contract. It returns a valid `VerificationFragment` if the merkle root of the document has not been marked as revoked.
+
+#### OpenAttestationEthereumTokenRegistryMinted
+
+The `OpenAttestationEthereumTokenRegistryMinted` checks the issuance status of the document using `OpenAttestationSignature2018` with `TOKEN_REGISTRY` methods, similar to `OpenAttestationEthereumDocumentStoreIssued`.
+
+The check calls the method `ownerOf(targetHash)` implemented on the Ethereum smart contract. It returns a valid `VerificationFragment` if the owner of the document is non-zero.
 
 ### Issuer Identity (ISSUER_IDENTITY)
 
