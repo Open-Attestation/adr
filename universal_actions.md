@@ -1,39 +1,42 @@
-# Universal Transfer Method for Open-Attestation Documents
+# Universal Actions for Open-Attestation Documents
 
 ## Status
 
-Accepted
+Draft
 
 ## Rationale
 
-The goal of the universal transfer method is to ensure that a standard is available to all clients interacting with OA documents. This allows different clients to be interoperable with one another. The standard is extremely important if we want to provide a client like an [identity wallet](https://github.com/Open-Attestation/identity-wallet) that supports all kinds of OA document.
+The goal of the universal action method is to ensure that a standard is available to all clients interacting with OA documents. This allows different clients to be interoperable with one another. The standard is extremely important if we want to provide a client like an [identity wallet](https://github.com/Open-Attestation/identity-wallet) that supports all kinds of OA document.
 
-Important considerations of the transfer method:
+## Universal Action
 
-- Reference to resource (uri)
-- Encrypted resource (key)
-- Permitted actions (termsOfUse)
-- Safe transfer (encoding)
-- Universal resolver (deep-linking)
+The standard will provide a way for actions to be communicated to various client implementations that uses OA documents. In addition, these actions can be scanned directly using a phone's QR code scanner to process the document.
+
+An example of such action is when storing a OA document into a identity wallet mobile application. The user will be able to launch the identity wallet app and view the OA document by just scanning a QR code.
+
+To do so, each of these actions will be URI formatted with a standard URL `openattestation.com/action?q=` followed by the action.
 
 ## Proposed Solution
 
 Sample QR code:
 
-![Proposed QR](assets/universal_transfer/proposed-qr.png)
+![Proposed QR](assets/universal_actions/proposed-qr.png)
 
 ```
-https://openattestation.com/action?document=%7B%22uri%22:%22https://somehostedresources.com/doc/7de3bce4-de62-4628-914e-97d41e642582%22,%22key%22:%22aa57eb519fd3c63c42c2f2697e8957198b56fc945c4db18b480c07d2e6485a93%22,%22permittedAction%22:%5B%22STORE%22%5D,%22redirect%22:%22https://tradetrust.io/%22%7D
+https://openattestation.com/action?q=%7B%22type%22:%22DOCUMENT%22,%22payload%22:%7B%22uri%22:%22https://somehostedresources.com/doc/7de3bce4-de62-4628-914e-97d41e642582%22,%22key%22:%22aa57eb519fd3c63c42c2f2697e8957198b56fc945c4db18b480c07d2e6485a93%22,%22permittedAction%22:%5B%22STORE%22%5D,%22redirect%22:%22https://tradetrust.io/%22%7D%7D
 ```
 
-Decoded Resource (after `?action=`):
+Decoded Resource (after `/action?q=`):
 
 ```json
 {
-  "uri": "https://somehostedresources.com/doc/7de3bce4-de62-4628-914e-97d41e642582",
-  "key": "aa57eb519fd3c63c42c2f2697e8957198b56fc945c4db18b480c07d2e6485a93",
-  "permittedAction": ["STORE"],
-  "redirect": "https://tradetrust.io/"
+  "type": "DOCUMENT",
+  "payload": {
+    "uri": "https://somehostedresources.com/doc/7de3bce4-de62-4628-914e-97d41e642582",
+    "key": "aa57eb519fd3c63c42c2f2697e8957198b56fc945c4db18b480c07d2e6485a93",
+    "permittedAction": ["STORE"],
+    "redirect": "https://tradetrust.io/"
+  }
 }
 ```
 
@@ -43,9 +46,19 @@ The proposed solution is to use universal/deep links to address the namespace po
 2. Allow any web client (tradetrust.io or opencerts.io) to scan and process the message at the path `/action?document=<encoded-json>`
 3. Provide [deep linking](https://docs.expo.io/versions/latest/workflow/linking/) opportunities for iOS/Android app to open the correct application on the phone to process the action.
 
+## Transfer Action
+
+Important considerations of the transfer method:
+
+- Reference to resource (uri)
+- Encrypted resource (key)
+- Permitted actions (termsOfUse)
+- Safe transfer (encoding)
+- Universal resolver (deep-linking)
+
 ### User Flow
 
-![User Flow](assets/universal_transfer/user-flow.png)
+![User Flow](assets/universal_actions/user-flow.png)
 
 #### Note on deliberately bad UX to deter fake QR codes
 
@@ -60,23 +73,6 @@ Deliberatly bad UX in the correct flow does not prevent fake QR codes frome exis
 
 - The `termsOfUse` model is not well defined yet
 - We do not have a "wallet" for the credential presenter to sign on the `presentation` object ([ref](https://w3c.github.io/vc-data-model/#concrete-lifecycle-example))
-
-## Generalised Actions
-
-From the above example, we can generalise the protocol to support other types of actions in the future, eg document presentation (w3c).
-
-Generally speaking, all action will be prefixed with `https://openattestation.com/action?`. The `field` of query string will then be the action type while the `value` of the query string will be the corresponding action, in url encoded format.
-
-Therefore `action?actionType={foo:"bar"}` (the values should be url encoded) will translate into the following action to be processed by the client application:
-
-```json
-{
-  "type": "actionType",
-  "payload": {
-    "foo": "bar"
-  }
-}
-```
 
 ## Review on Current State
 
