@@ -13,12 +13,12 @@ The primary objectives of this identity proof are:
 
 __W3C-DID Identity Proof Example:__
 ```json
-	...
-	identityProof {
-		type: “W3C-DID”,
-		location: “did:ethr:0xb9c5714089478a327f09197987f16f9e5d936e8a”
+{
+	"identityProof": {
+		"type": “W3C-DID”,
+		"location": “did:ethr:0xb9c5714089478a327f09197987f16f9e5d936e8a”
 	}
-	...
+}
 ```
 
 One of the primary concerns of any document verifier is determining _who_ issued the given document.
@@ -37,19 +37,21 @@ To be specific, each DID resolves to a DIDDocument, a JSON-LD document, as forma
 
 For example the resulting DIDDocument for the above DID, `did:ethr:0xb9c5714089478a327f09197987f16f9e5d936e8a`, is:
 ```json
-"didDocument":{
-	"@context" : "https://w3id.org/did/v1",
-	"id" : "did:ethr:0xb9c5714089478a327f09197987f16f9e5d936e8a",
-		"authentication" : [{
-		"type" : "Secp256k1SignatureAuthentication2018",
-		"publicKey" : [ "did:ethr:0xb9c5714089478a327f09197987f16f9e5d936e8a#owner" ]
-	}],
-	"publicKey" : [ {
-		"id" : "did:ethr:0xb9c5714089478a327f09197987f16f9e5d936e8a#owner",
-		"type" : "Secp256k1VerificationKey2018",
-		"ethereumAddress" : "0xb9c5714089478a327f09197987f16f9e5d936e8a",
-		"owner" : "did:ethr:0xb9c5714089478a327f09197987f16f9e5d936e8a"
-	}]
+{
+	"didDocument":{
+		"@context" : "https://w3id.org/did/v1",
+		"id" : "did:ethr:0xb9c5714089478a327f09197987f16f9e5d936e8a",
+			"authentication" : [{
+			"type" : "Secp256k1SignatureAuthentication2018",
+			"publicKey" : [ "did:ethr:0xb9c5714089478a327f09197987f16f9e5d936e8a#owner" ]
+		}],
+		"publicKey" : [ {
+			"id" : "did:ethr:0xb9c5714089478a327f09197987f16f9e5d936e8a#owner",
+			"type" : "Secp256k1VerificationKey2018",
+			"ethereumAddress" : "0xb9c5714089478a327f09197987f16f9e5d936e8a",
+			"owner" : "did:ethr:0xb9c5714089478a327f09197987f16f9e5d936e8a"
+		}]
+	}
 }
 ```
 
@@ -65,20 +67,17 @@ In summary, the existing Ethereum externally owned account(EOA) that has been us
 Given an issued document containing the following (*truncated for simplicity*):
 ```json
 {
-	...
-	proof: {
-		type: "...:OpenAttestationSignature2018",
-		method: "...:DOCUMENT_STORE",
-		value: "...:0x8Fc57204c35fb9317D91285eF52D6b892EC08cD3"
+	"proof": {
+		"type": "...:OpenAttestationSignature2018",
+		"method": "...:DOCUMENT_STORE",
+		"value": "...:0x8Fc57204c35fb9317D91285eF52D6b892EC08cD3"
 	},
-	issuer: {
-		...
-		identityProof: {
-			type: "...:W3C-DID",
-			location: "...:did:ethr:0xB26B4941941C51a4885E5B7D3A1B861E54405f90"
+	"issuer": {
+		"identityProof": {
+			"type": "...:W3C-DID",
+			"location": "...:did:ethr:0xB26B4941941C51a4885E5B7D3A1B861E54405f90"
 		}
 	}
-	...
 }
 ```
 
@@ -96,17 +95,17 @@ Given an issued document containing the following (*truncated for simplicity*):
 	For Example:
     	```json
     	{
-    		'@context': 'https://w3id.org/did/v1',
-    		id: 'did:ethr:0xb9c5714089478a327f09197987f16f9e5d936e8a',
-    		publicKey: [{
-    			id: 'did:ethr:0xb9c5714089478a327f09197987f16f9e5d936e8a#owner',
-    			type: 'Secp256k1VerificationKey2018',
-    			owner: 'did:ethr:0xb9c5714089478a327f09197987f16f9e5d936e8a',
-    			ethereumAddress: '0xb9c5714089478a327f09197987f16f9e5d936e8a'
+    		"@context": "https://w3id.org/did/v1",
+    		"id": "did:ethr:0xb9c5714089478a327f09197987f16f9e5d936e8a",
+    		"publicKey": [{
+    			"id": "did:ethr:0xb9c5714089478a327f09197987f16f9e5d936e8a#owner",
+    			"type": "Secp256k1VerificationKey2018",
+    			"owner": "did:ethr:0xb9c5714089478a327f09197987f16f9e5d936e8a",
+    			"ethereumAddress": "0xb9c5714089478a327f09197987f16f9e5d936e8a"
     		}],
-    		authentication: [{
-    			type: 'Secp256k1SignatureAuthentication2018',
-    			publicKey: 'did:ethr:0xb9c5714089478a327f09197987f16f9e5d936e8a#owner'
+    		"authentication": [{
+    			"type": "Secp256k1SignatureAuthentication2018",
+    			"publicKey": "did:ethr:0xb9c5714089478a327f09197987f16f9e5d936e8a#owner"
     		}]
     	}
     	```
@@ -115,19 +114,21 @@ Given an issued document containing the following (*truncated for simplicity*):
 	- The retrieved DIDDocument effectively communicates information about how ownership of the DID can be proven as noted within the `authentication` array.
 	For example:
     	```json
-    	authentication: [{
-    		type: 'Secp256k1SignatureAuthentication2018',
-    		publicKey: 'did:ethr:0xb9c5714089478a327f09197987f16f9e5d936e8a#owner'
-    	}]
+		{
+			"authentication": [{
+				"type": "Secp256k1SignatureAuthentication2018",
+				"publicKey": "did:ethr:0xb9c5714089478a327f09197987f16f9e5d936e8a#owner"
+			}]
+		}
     	```
 	- In this example the only authentication method is of type: `Secp256k1SignatureAuthentication2018` with `publicKey: did:ethr:0xb9c5714089478a327f09197987f16f9e5d936e8a#owner` and therefore we must define a way to verify the issuer with such.
 	- The `publicKey` is in fact a URL itself that locates a property within the DIDDocument.  In this case locating the following:
     	```json
     	{
-    		id: 'did:ethr:0xb9c5714089478a327f09197987f16f9e5d936e8a#owner',
-    		type: 'Secp256k1VerificationKey2018',
-    		owner: 'did:ethr:0xb9c5714089478a327f09197987f16f9e5d936e8a',
-    		ethereumAddress: '0xb9c5714089478a327f09197987f16f9e5d936e8a'
+    		"id": "did:ethr:0xb9c5714089478a327f09197987f16f9e5d936e8a#owner",
+    		"type": "Secp256k1VerificationKey2018",
+    		"owner": "did:ethr:0xb9c5714089478a327f09197987f16f9e5d936e8a",
+    		"ethereumAddress": "0xb9c5714089478a327f09197987f16f9e5d936e8a"
     	}
     	```
 	- This presents the opportunity to verify the issuer against the `ethereumAddress` associated with this `publicKey`.
