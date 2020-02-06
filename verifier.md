@@ -44,7 +44,11 @@ An example of `VerificationFragment` that skips the DNS-TXT verification:
   "name": "OpenAttestationDnsTxt",
   "type": "ISSUER_IDENTITY",
   "status": "SKIPPED",
-  "message": "Document issuers doesn't have \"documentStore\" or \"token\" property"
+  "reason": {
+    "code": 2,
+    "codeString": "SKIPPED",
+    "message": "Document issuers doesn't have \"documentStore\" / \"tokenRegistry\" property or doesn't use DNS-TXT type"
+  }
 }
 ```
 
@@ -78,12 +82,20 @@ An example `VerificationFragment` of a failed test:
   "name": "OpenAttestationEthereumDocumentStoreIssued",
   "type": "DOCUMENT_STATUS",
   "status": "INVALID",
-  "message": "Certificate has not been issued",
-  "data": {
+  "reason": {
+    "code": 3,
+    "codeString": "ETHERS_UNHANDLED_ERROR",
+    "message": "Error with smart contract 0x007d40224f6562461633ccfbaffd359ebb2fc9ba: call exception"
+    },
+   "data": {
     "details": [
       {
         "address": "0x20bc9C354A18C8178A713B9BcCFFaC2152b53990",
-        "error": "call exception (address=\"0x20bc9C354A18C8178A713B9BcCFFaC2152b53990\", method=\"isIssued(bytes32)\", args=[\"0x85df2b4e905a82cf10c317df8f4b659b5cf38cc12bd5fbaffba5fc901ef0011b\"], version=4.0.40)",
+        "reason": {
+          "code": 3,
+          "codeString": "ETHERS_UNHANDLED_ERROR",
+          "message": "Error with smart contract 0x007d40224f6562461633ccfbaffd359ebb2fc9ba: call exception"
+        },
         "issued": false
       }
     ],
