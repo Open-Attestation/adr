@@ -14,7 +14,7 @@ The standard will provide a way for actions to be communicated to various client
 
 An example of such action is when storing a OA document into a identity wallet mobile application. The user will be able to launch the identity wallet app and view the OA document by just scanning a QR code.
 
-To do so, each of these actions will be URI formatted with a standard URL `openattestation.com/action?q=` followed by the action.
+To do so, each of these actions will be URI formatted with a standard URL `action.openattestation.com?q=` followed by the action.
 
 ## Proposed Solution
 
@@ -23,7 +23,7 @@ Sample QR code:
 ![Proposed QR](assets/universal_actions/proposed-qr.png)
 
 ```
-https://openattestation.com/action?q=%7B%22type%22:%22DOCUMENT%22,%22payload%22:%7B%22uri%22:%22https://somehostedresources.com/doc/7de3bce4-de62-4628-914e-97d41e642582%22,%22key%22:%22aa57eb519fd3c63c42c2f2697e8957198b56fc945c4db18b480c07d2e6485a93%22,%22permittedAction%22:%5B%22STORE%22%5D,%22redirect%22:%22https://tradetrust.io/%22%7D%7D
+https://action.openattestation.com?q=%7B%22type%22:%22DOCUMENT%22,%22payload%22:%7B%22uri%22:%22https://somehostedresources.com/doc/7de3bce4-de62-4628-914e-97d41e642582%22,%22key%22:%22aa57eb519fd3c63c42c2f2697e8957198b56fc945c4db18b480c07d2e6485a93%22,%22permittedAction%22:%5B%22STORE%22%5D,%22redirect%22:%22https://tradetrust.io/%22%7D%7D
 ```
 
 Decoded Resource (after `/action?q=`):
@@ -34,7 +34,7 @@ Decoded Resource (after `/action?q=`):
   "payload": {
     "uri": "https://somehostedresources.com/doc/7de3bce4-de62-4628-914e-97d41e642582",
     "key": "aa57eb519fd3c63c42c2f2697e8957198b56fc945c4db18b480c07d2e6485a93",
-    "permittedAction": ["STORE"],
+    "permittedActions": ["STORE"],
     "redirect": "https://tradetrust.io/"
   }
 }
@@ -42,8 +42,8 @@ Decoded Resource (after `/action?q=`):
 
 The proposed solution is to use universal/deep links to address the namespace portion. This allow us to :
 
-1. Provide an application (think universal router) at openattestation.com to handle the action if the user scans the code using a standard QR code scanner on mobile and redirect to a specific client, represented in `redirect`. --or-- Link to a page to get user to download the standard wallet app, with option to redirect to the web client if they click on that.
-2. Allow any web client (tradetrust.io or opencerts.io) to scan and process the message at the path `/action?document=<encoded-json>`
+1. Provide an application (think universal router) at action.openattestation.com to handle the action if the user scans the code using a standard QR code scanner on mobile and redirect to a specific client, represented in `redirect`. --or-- Link to a page to get user to download the standard wallet app, with option to redirect to the web client if they click on that.
+2. Allow any web client (tradetrust.io or opencerts.io) to scan and process the message at the provided url for redirection. The message will be available through the `q` query parameter `<redirected url>?q=<encoded-json>`. The hostname of the provided URL must have been whitelisted by action.openattestation.com.
 3. Provide [deep linking](https://docs.expo.io/versions/latest/workflow/linking/) opportunities for iOS/Android app to open the correct application on the phone to process the action.
 
 ## Transfer Action
@@ -119,18 +119,14 @@ Sample QR Code:
 VIEW;{"uri":"https://something.com/get/resourceId","type":"type","key":"key"}
 ```
 
-### Direct Link
+### Opencerts
 
 There is one implementation currently in OpenCerts website:
 
-[Implementation](https://github.com/OpenCerts/opencerts-website/pull/399)
-
-The OpenCerts method allows the user to provide just the resource id.
+[Implementation](https://github.com/OpenCerts/opencerts-website/pull/480)
 
 Sample URL:
 
 ```
-https://opencerts.io/?documentId=7de3bce4-de62-4628-914e-97d41e642582#aa57eb519fd3c63c42c2f2697e8957198b56fc945c4db18b480c07d2e6485a93
+https://dev.opencerts.io/?q=%7B%22type%22:%22DOCUMENT%22,%22payload%22:%7B%22uri%22:%22https://api.myjson.com/bins/1a9acm%22,%22key%22:%221b8c334a38f9ff96108303a4ba0cc592f1559eb24f5b48b70c9300c60a34d5e9%22,%22permittedActions%22:%5B%22STORE%22%5D,%22redirect%22:%22https://dev.opencerts.io%22%7D%7D
 ```
-
-The url has two parts. The first is the `documentId` which resolves to a URI when combined with the base endpoint URL. The second is the `decryptionKey` which appears after the `#`. The decryption key is used to decrypt the document after it has been downloaded from the URI to return the original document in clear text.
