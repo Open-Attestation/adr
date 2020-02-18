@@ -85,6 +85,7 @@ Some specific problem form users in this group:
 - Deploy document store and token registry (with proxy option)
 - Issue a document / create a token
 - W3C VC commands
+- Sandbox environment - i.e create DNS-TXT records etc
 
 ### Transferable Records Creator
 
