@@ -15,3 +15,4 @@ Architectural Decision Records (ADRs) for OpenAttestation/OpenCerts/TradeTrust
 | [Universal Actions Protocol](./universal_actions.md)                                | Draft    | IdentityWallet              |
 | [OpenAttestation Universal Verifier](./verifier.md)                                 | Draft    | OpenAttestation             |
 | [Modular Identity Framework](./modular_identity_framework.md)                       | Draft    | OpenAttestation             |
+| [Workstream](./workstream.md)                                                       | Draft    | OpenAttestation             |
