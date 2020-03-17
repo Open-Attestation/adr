@@ -26,7 +26,7 @@ Sample QR code:
 https://action.openattestation.com?q=%7B%22type%22:%22DOCUMENT%22,%22payload%22:%7B%22uri%22:%22https://somehostedresources.com/doc/7de3bce4-de62-4628-914e-97d41e642582%22,%22key%22:%22aa57eb519fd3c63c42c2f2697e8957198b56fc945c4db18b480c07d2e6485a93%22,%22permittedAction%22:%5B%22STORE%22%5D,%22redirect%22:%22https://tradetrust.io/%22%7D%7D
 ```
 
-Decoded Resource (after `/action?q=`):
+Decoded Resource (after `/?q=`):
 
 ```json
 {
