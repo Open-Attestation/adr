@@ -82,3 +82,11 @@ TBD
 ## Batch Document Creation
 
 TBD
+
+## Upload Document to Permanent Storage During Creation
+
+TBD
+
+## Appending QR code to the document
+
+TBD
