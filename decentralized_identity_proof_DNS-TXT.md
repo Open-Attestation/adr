@@ -91,6 +91,33 @@ This will unfortunately be an unresolved issue if we use DNS, as DNS has no arch
 #### DNS Spoofing
 [DNS spoofing](https://en.wikipedia.org/wiki/DNS_spoofing) is partially mitigated by using a well known DNS resolver such as Google or Cloudflare to retrieve the TXT records. However using DNSSEC can fully resolve the issue.
 
+## Using DNS and DID to verify the identity of a signer
+When signing a certificate, one can add it's DID into the `proof.verificationMethod` field, so that OA can automatically verify that the DID was the one that signed the certificate:
+```json
+proof: {
+  type: "EcdsaSecp256k1Signature2019",
+  created: "2020-04-26T21:41:34.663Z",
+  proofPurpose: "assertionMethod",
+  verificationMethod: "did:ethr:ropsten:0x44E682d207bcDDDAD0Bb3a650cCb9de0911B9D3A#owner",
+  signature:      "0x49898c7ded0bef0e3fb96b3f69b097dda45a474c62142d72a0834d814c092cbe458a16f44efe136614e74ffd69b8273688af347826b9efaccd6a12f200185eef1c"
+}
+```
+
+However DID doesn't proove identity. According to [W3C DID specification](https://www.w3.org/TR/did-core/), there is a [draft](https://datatracker.ietf.org/doc/draft-mayrhofer-did-dns/?include_text=1) specification for discovering a DID from domain names and email addresses using DNS lookups.
+
+While the draft recommend using RRType URI for such discovery, the RRType is not widely supported (For instance Route53 from AWS). As such, we decided to stick with TXT RRType for DID discovery:
+```
+TXT     openatts did=did:ethr:ropsten:0x44E682d207bcDDDAD0Bb3a650cCb9de0911B9D3A
+```
+
+In order to resolve the identity, the value of `did` in the TXT record must match the value of `proof.verificationMethod` of the signed certificate. 
+
+NOTE TO MYSELF => WHAT ABOUT THE #owner ? I THINK WE CAN IGNORE WHATEVER IS AFTER THE ADDRESS
+
+> Note: We are open to extend this and support URI RRType.
+
+
+
 ## Can other identity proofs be used?
 
 ```json
