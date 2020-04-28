@@ -108,7 +108,7 @@ However a signature itself doesn't prove identity. We can reuse a similar mechan
 TXT     openatts a=ecdsa-secp256k1-signature-2019; p=0x44E682d207bcDDDAD0Bb3a650cCb9de0911B9D3A
 ```
 
-In order to resolve the identity, the value of `pubKey` in the TXT record must match the value of `proof.publicKey` of the signed certificate.
+In order to resolve the identity, the value of `p` in the TXT record must match the value of `proof.publicKey` of the signed certificate.
 
 > Note: We follow [RFC6376](https://tools.ietf.org/html/rfc6376) convention.
 
