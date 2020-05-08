@@ -85,6 +85,7 @@ Cons
 This method works by extending the existing DID implementation to use standard PKI certificates
 
 Option 1 - Develop proprietary resolver method (ie did:swift:<BIC/URI_TO_CERT>)
+
 Option 2 - Develop standard resolver for all x.509 certificates (ie did:x509:<URI_TO_CERT>)
 
 Pros
