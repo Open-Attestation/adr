@@ -1,4 +1,6 @@
-# Identifier Resolution (3rd Party REST APIS) POC
+# 3rd Party Identifier Resolver API
+
+This document specify the specifications for the `3rd Party Identifier Resolver API` documented in the [Identifier Resolution Framework](./identifier_resolution_framework.md)
 
 ## Status
 
