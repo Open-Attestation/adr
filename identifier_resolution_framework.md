@@ -35,6 +35,8 @@ Counter examples to the resolvers are:
 
 In the counter examples, the resolver is trying to do the job of a verifier and it's also **moving away** from a more readable identifier.
 
+Implementation of the 3rd Party REST APIs are discussed [here](./identifier_resolution_api.md)
+
 ### Data Structure
 
 Given an identifier (ie 0x11..11), we will get the following response from the identifier association module:
