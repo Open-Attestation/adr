@@ -39,3 +39,52 @@ The POC will provide a API spec to be included in the identifier resolution fram
 2. How entires can be inserted or deleted
 3. Authorisation
 4. Business model of the API owner
+
+---
+
+## API Specification
+
+### GET /\<identifier\>
+
+This is the endpoint that will be used to resolve an identifier. For instance to resolve the identity of `0x0103e04ecaa67c4e5a8c6dc1ddda35340e2c6bc8`, we will call the endpoint `https://demo-resolver.tradetrust.io/identifier/0x0103e04ecaa67c4e5a8c6dc1ddda35340e2c6bc8` where `https://demo-resolver.tradetrust.io/identifier/` is the base url.
+
+#### Successful Resolution
+
+For successful resolution, the API must return a `200` response in `application/json` format. The message must contain an `identity` object with the `identifier` and `name` key. Additional keys may be added to the `identity` object.
+
+```json
+{
+  "identity": {
+    "identifier": "0x0103e04ecaa67c4e5a8c6dc1ddda35340e2c6bc8",
+    "name": "ABC Pte Ltd",
+    "remarks": "Added by Raymond"
+  }
+}
+```
+
+#### Unsuccessful Resolution
+
+For unsuccessful resolution, te API must return a `404` response in `application/json` format. The message may contain a `message` key to explain the error. Additional keys are also permitted.
+
+```json
+{
+  "requestId": "db98db33-5c58-4f3e-a740-b855e4232230",
+  "message": "No profile found for 0x0103e04ecaa67c4e5a8c6dc1ddda35340e2c6b88"
+}
+```
+
+## Reference Implementation
+
+A reference implementation of this service can be found at https://github.com/Open-Attestation/demo-identifier-resolver.
+
+The hosted endpoint is available at https://demo-resolver.tradetrust.io/identifier.
+
+Successful Resolution:
+https://demo-resolver.tradetrust.io/identifier/0x0103e04ecaa67c4e5a8c6dc1ddda35340e2c6bc8
+
+Failed Resolution:
+https://demo-resolver.tradetrust.io/identifier/0x0103e04ecaa67c4e5a8c6dc1ddda35340e2c6b88
+
+## TBD
+
+Include reference implementation and specs for protected endpoint with API keys.
