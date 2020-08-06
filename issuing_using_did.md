@@ -180,7 +180,7 @@ A `revocation.type: "NONE"` must exist to ensure that the an end user did not ob
       {
         "name": "TradeTrust Demo",
         "revocation": {
-          "type": "DOCUMENT_STORE",
+          "type": "REVOCATION_STORE",
           "address": "0xabcd...1234"
         }
       }
