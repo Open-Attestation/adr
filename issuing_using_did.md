@@ -200,3 +200,201 @@ This allow a user to "reserve" an address for the revocation store in the future
 
 - I noticed that we may move the "DNS-TXT" out of the data object for existing OA document as well without affecting the security of it
 - How do we allow a document to use both DID and DNS proof?
+
+### Notes 11/08/20
+
+Directly signed with DID with DNS binding
+
+```json
+{
+  "schema": "tradetrust/v1.0",
+  "data": {
+    "issuers": [
+      {
+        "name": "TradeTrust Demo",
+        "identityProof": [
+          {
+            "type": "DID",
+            "id": "did:ethr:0xE6Fe788d8ca214A080b0f6aC7F48480b2AEfa9a6",
+            "purpose": "DOCUMENT_ISSUANCE",
+            "revocation": {
+              "type": "REVOCATION_STORE",
+              "address": "0xabcd...1234"
+            },
+            "key": {
+              "id": "did:ethr:0xE6Fe788d8ca214A080b0f6aC7F48480b2AEfa9a6#owner",
+              "type": "Secp256k1VerificationKey2018",
+              "ethereumAddress": "0xe6fe788d8ca214a080b0f6ac7f48480b2aefa9a6",
+              "owner": "did:ethr:0xE6Fe788d8ca214A080b0f6aC7F48480b2AEfa9a6"
+            }
+          },
+          {
+            "type": "DNS-DID",
+            "location": "example.com"
+          }
+        ]
+      }
+    ]
+  },
+  "proof": {
+    "type": "DidGenericSignature",
+    "proofPurpose": "assertionMethod",
+    "signature": "<signed merkle root>"
+  }
+}
+```
+
+Issued via Document Store, identified via DNS through DID
+
+```json
+{
+  "schema": "tradetrust/v1.0",
+  "data": {
+    "issuers": [
+      {
+        "name": "TradeTrust Demo",
+        "documentStore": "0x6d71da10Ae0e5B73d0565E2De46741231Eb247C7",
+        "identityProof": [
+          {
+            "type": "DID",
+            "id": "did:ethr:0xE6Fe788d8ca214A080b0f6aC7F48480b2AEfa9a6",
+            "purpose": "CONTRACT_ADDRESS_PROOF",
+            "signature": "",
+            "key": {
+              "id": "did:ethr:0xE6Fe788d8ca214A080b0f6aC7F48480b2AEfa9a6#owner",
+              "type": "Secp256k1VerificationKey2018",
+              "ethereumAddress": "0xe6fe788d8ca214a080b0f6ac7f48480b2aefa9a6",
+              "owner": "did:ethr:0xE6Fe788d8ca214A080b0f6aC7F48480b2AEfa9a6"
+            }
+          },
+          {
+            "type": "DNS-DID",
+            "location": "example.com"
+          }
+        ]
+      }
+    ]
+  },
+  "privacy": {
+    "obfuscatedData": []
+  },
+  "signature": {
+    "type": "SHA3MerkleProof",
+    "targetHash": "61dc9186345e05cc2ae53dc72af880a3b66e2fa7983feaa6254d1518540de50a",
+    "proof": [],
+    "merkleRoot": "61dc9186345e05cc2ae53dc72af880a3b66e2fa7983feaa6254d1518540de50a"
+  }
+}
+```
+
+Issued via Document Store, identified via DID
+
+```json
+{
+  "schema": "tradetrust/v1.0",
+  "data": {
+    "issuers": [
+      {
+        "name": "TradeTrust Demo",
+        "documentStore": "0x6d71da10Ae0e5B73d0565E2De46741231Eb247C7",
+        "identityProof": [
+          {
+            "type": "DID",
+            "id": "did:ethr:0xE6Fe788d8ca214A080b0f6aC7F48480b2AEfa9a6",
+            "purpose": "CONTRACT_ADDRESS_PROOF",
+            "signature": "",
+            "key": {
+              "id": "did:ethr:0xE6Fe788d8ca214A080b0f6aC7F48480b2AEfa9a6#owner",
+              "type": "Secp256k1VerificationKey2018",
+              "ethereumAddress": "0xe6fe788d8ca214a080b0f6ac7f48480b2aefa9a6",
+              "owner": "did:ethr:0xE6Fe788d8ca214A080b0f6aC7F48480b2AEfa9a6"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "privacy": {
+    "obfuscatedData": []
+  },
+  "signature": {
+    "type": "SHA3MerkleProof",
+    "targetHash": "61dc9186345e05cc2ae53dc72af880a3b66e2fa7983feaa6254d1518540de50a",
+    "proof": [],
+    "merkleRoot": "61dc9186345e05cc2ae53dc72af880a3b66e2fa7983feaa6254d1518540de50a"
+  }
+}
+```
+
+Issued by direct signing, identified by DID
+
+```json
+{
+  "schema": "tradetrust/v1.0",
+  "data": {
+    "issuers": [
+      {
+        "name": "TradeTrust Demo",
+        "identityProof": [
+          {
+            "type": "DID",
+            "id": "did:ethr:0xE6Fe788d8ca214A080b0f6aC7F48480b2AEfa9a6",
+            "purpose": "DOCUMENT_ISSUANCE",
+            "revocation": {
+              "type": "REVOCATION_STORE",
+              "address": "0xabcd...1234"
+            },
+            "key": {
+              "id": "did:ethr:0xE6Fe788d8ca214A080b0f6aC7F48480b2AEfa9a6#owner",
+              "type": "Secp256k1VerificationKey2018",
+              "ethereumAddress": "0xe6fe788d8ca214a080b0f6ac7f48480b2aefa9a6",
+              "owner": "did:ethr:0xE6Fe788d8ca214A080b0f6aC7F48480b2AEfa9a6"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "proof": {
+    "type": "DidGenericSignature",
+    "proofPurpose": "assertionMethod",
+    "signature": "<signed merkle root>"
+  }
+}
+```
+
+## Pseudocode for verification
+
+### Identity verification Fragments
+
+If any identity proof is of type "DID" with purpose "DOCUMENT_ISSUANCE":
+
+- Check that `proof.signature` is the merkle root signed with the key corresponding to `identityProof[x].key.id` using the scheme `identityProof[x].key.type`
+- Return `IS_VALID` when the check passes, else return `INVALID`
+
+If any identity proof is of type "DID" with purpose "CONTRACT_ADDRESS_PROOF":
+
+- Check that `proof.signature` is the document store address signed with the key corresponding to `identityProof[x].key.id` using the scheme `identityProof[x].key.type`
+- Return `IS_VALID` when the check passes, else return `INVALID`
+
+If any identity proof is of type "DNS-TXT" or "DNS-DOCUMENT_STORE":
+
+- Check that the DNS TXT record of the domain (in `location`) has the document store entry
+- Return `IS_VALID` when the check passes, else return `INVALID`
+
+If any identity proof is of type "DNS-DID":
+
+- Check that the DNS TXT record of the domain (in `location`) has the did entry
+- Return `IS_VALID` when the check passes, else return `INVALID`
+
+### Document status Fragments
+
+If any identity proof is of type "DID" with purpose "DOCUMENT_ISSUANCE":
+
+- Check that `proof.signature` is the merkle root signed with the key corresponding to `identityProof[x].key.id` using the scheme `identityProof[x].key.type`
+- Check that the revocation type is `REVOCATION_STORE` or `NONE`. If it's a revocation store, check store for revocation on document's targetHash
+- Return `IS_VALID` when the check passes, else return `INVALID`
+
+If document has `documentStore`, `certificateStore` or `tokenRegistry`:
+
+- Use existing 2 types of fragments for checks
