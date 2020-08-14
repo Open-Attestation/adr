@@ -374,7 +374,7 @@ If any identity proof is of type "DID" with purpose "DOCUMENT_ISSUANCE":
 
 If any identity proof is of type "DID" with purpose "CONTRACT_ADDRESS_PROOF":
 
-- Check that `proof.signature` is the document store address signed with the key corresponding to `identityProof[x].key.id` using the scheme `identityProof[x].key.type`
+- Check that `identityProof[x].signature` is the document store address signed with the key corresponding to `identityProof[x].key.id` using the scheme `identityProof[x].key.type`
 - Return `IS_VALID` when the check passes, else return `INVALID`
 
 If any identity proof is of type "DNS-TXT" or "DNS-DOCUMENT_STORE":
