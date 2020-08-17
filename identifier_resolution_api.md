@@ -149,7 +149,3 @@ Failed Resolution:
 curl --location --request GET 'https://demo-resolver.tradetrust.io/search?q=ab' \
 --header 'x-api-key: DEMO'
 ```
-
-## TBD
-
-Include reference implementation and specs for protected endpoint with API keys.
