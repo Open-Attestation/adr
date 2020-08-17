@@ -75,17 +75,80 @@ For unsuccessful resolution, te API must return a `404` response in `application
 }
 ```
 
+### GET /search?q=\<query\>
+
+This is the endpoint that can be used to search for entries on the resolver. Sample usage of this is to create an organisation wide address book within the intranet for the admin clerks. The endpoint will receive the query parameter with the `q` query string and will return results in an array like below.
+
+```json
+{
+  "identities": [
+    {
+      "identifier": "0x0103e04ecaa67c4e5a8c6dc1ddda35340e2c6bc8",
+      "name": "ABC Pte Ltd",
+      "remarks": "Added by Raymond"
+    },
+    {
+      "identifier": "0x74306e2163d72bf2f3241dd5730893463433474f",
+      "name": "Seller ABC (docs)",
+      "remarks": "Added by Shujing"
+    },
+    {
+      "identifier": "0x1dc271eae22a83c9670571d1a206043e8a420fde",
+      "name": "Identity ABC",
+      "remarks": "Added by Raymond"
+    }
+  ]
+}
+```
+
+#### Unsuccessful Resolution
+
+For query string that does not return any results, an empty array `[]` should be returned. For queries that resulted in an error, for instance when query string is too short, an error should be returned. An example is shown:
+
+```json
+{
+  "requestId": "e921ce67-2e57-4a73-92b9-f46df605b4f2",
+  "message": "Query string needs to be at least 3 characters"
+}
+```
+
 ## Reference Implementation
 
 A reference implementation of this service can be found at https://github.com/Open-Attestation/demo-identifier-resolver.
 
 The hosted endpoint is available at https://demo-resolver.tradetrust.io/identifier.
 
+### Demo Identity Resolution
+
 Successful Resolution:
-https://demo-resolver.tradetrust.io/identifier/0x0103e04ecaa67c4e5a8c6dc1ddda35340e2c6bc8
+
+```sh
+curl --location --request GET 'https://demo-resolver.tradetrust.io/identifier/0x0103e04ecaa67c4e5a8c6dc1ddda35340e2c6bc8' \
+--header 'x-api-key: DEMO'
+```
 
 Failed Resolution:
-https://demo-resolver.tradetrust.io/identifier/0x0103e04ecaa67c4e5a8c6dc1ddda35340e2c6b88
+
+```sh
+curl --location --request GET 'https://demo-resolver.tradetrust.io/identifier/0x0103e04ecaa67c4e5a8c6dc1ddda35340e2c6b88' \
+--header 'x-api-key: DEMO'
+```
+
+### Demo Search
+
+Successful Resolution:
+
+```sh
+curl --location --request GET 'https://demo-resolver.tradetrust.io/search?q=abc' \
+--header 'x-api-key: DEMO'
+```
+
+Failed Resolution:
+
+```sh
+curl --location --request GET 'https://demo-resolver.tradetrust.io/search?q=ab' \
+--header 'x-api-key: DEMO'
+```
 
 ## TBD
 
