@@ -398,3 +398,47 @@ If any identity proof is of type "DID" with purpose "DOCUMENT_ISSUANCE":
 If document has `documentStore`, `certificateStore` or `tokenRegistry`:
 
 - Use existing 2 types of fragments for checks
+
+## Notes 19/08/20
+
+- moved revocation to issuer level to be on the same level as documentStore and tokenRegistry
+- proofs as an array
+
+```json
+{
+  "schema": "tradetrust/v1.0",
+  "data": {
+    "issuers": [
+      {
+        "name": "TradeTrust Demo",
+        "revocation": {
+          "type": "REVOCATION_STORE",
+          "address": "0xabcd...1234"
+        },
+        "identityProof": [
+          {
+            "type": "DID",
+            "id": "did:ethr:0xE6Fe788d8ca214A080b0f6aC7F48480b2AEfa9a6",
+            "purpose": "DOCUMENT_ISSUANCE",
+            "key": {
+              "id": "did:ethr:0xE6Fe788d8ca214A080b0f6aC7F48480b2AEfa9a6#owner",
+              "type": "Secp256k1VerificationKey2018",
+              "ethereumAddress": "0xe6fe788d8ca214a080b0f6ac7f48480b2aefa9a6",
+              "owner": "did:ethr:0xE6Fe788d8ca214A080b0f6aC7F48480b2AEfa9a6"
+            }
+          },
+          {
+            "type": "DNS-DID",
+            "location": "example.com"
+          }
+        ]
+      }
+    ]
+  },
+  "proof": [{
+    "type": "DidGenericSignature",
+    "proofPurpose": "assertionMethod",
+    "signature": "<signed merkle root>"
+  }]
+}
+```
