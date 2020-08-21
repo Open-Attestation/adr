@@ -435,10 +435,146 @@ If document has `documentStore`, `certificateStore` or `tokenRegistry`:
       }
     ]
   },
-  "proof": [{
-    "type": "DidGenericSignature",
-    "proofPurpose": "assertionMethod",
-    "signature": "<signed merkle root>"
-  }]
+  "proof": [
+    {
+      "type": "DidGenericSignature",
+      "proofPurpose": "assertionMethod",
+      "signature": "<signed merkle root>"
+    }
+  ]
+}
+```
+
+## Notes 21/08/2020
+
+If we have multiple identityProof, the viewer may have a hard time trying to guess which one should be the top level one. Was thinking about a different approach where we have only one identityProof:
+
+### Issuing Directly with DID signature, identified by DNS:
+
+The `DNS-DID` type will be slightly different from the `DNS-TXT` method (which may be better named now to `DNS-CONTRACT`?). It does the job of:
+
+1. Making the claim that the DID belong to a domain
+2. Allowing the verifier to check against the domain txt record for validity of the claim
+3. Allow the `proof` block to make a claim later that it is signed by this DID, and hence the domain
+
+\_ Note that when the identityProof type is `DNS-DID`, we MUST check fo the existence of the revocation key
+
+```json
+{
+  "schema": "tradetrust/v1.0",
+  "data": {
+    "issuers": [
+      {
+        "name": "TradeTrust Demo",
+        "revocation": {
+          "type": "REVOCATION_STORE",
+          "address": "0xabcd...1234"
+        },
+        "identityProof": {
+          "type": "DNS-DID",
+          "id": "did:ethr:0xE6Fe788d8ca214A080b0f6aC7F48480b2AEfa9a6",
+          "purpose": "DOCUMENT_ISSUANCE",
+          "key": {
+            "id": "did:ethr:0xE6Fe788d8ca214A080b0f6aC7F48480b2AEfa9a6#owner",
+            "type": "Secp256k1VerificationKey2018",
+            "ethereumAddress": "0xe6fe788d8ca214a080b0f6ac7f48480b2aefa9a6",
+            "owner": "did:ethr:0xE6Fe788d8ca214A080b0f6aC7F48480b2AEfa9a6"
+          },
+          "location": "demo-tradetrust.openattestation.com"
+        }
+      }
+    ]
+  },
+  "proof": [
+    {
+      "type": "DidGenericSignature",
+      "proofPurpose": "assertionMethod",
+      "signature": "<signed merkle root>"
+    }
+  ]
+}
+```
+
+### Issued via Document Store, identified via DID
+
+The `DID-CONTRACT` type uses DID as the top level identifier. It does the job of:
+
+1. Making a claim that a document store is associated with a DID, alongside which key it is
+2. Allowing the verifier to check that the claim is legit by verifying the signature & that the public key belong to the DID
+
+```json
+{
+  "schema": "tradetrust/v1.0",
+  "data": {
+    "issuers": [
+      {
+        "name": "TradeTrust Demo",
+        "documentStore": "0x6d71da10Ae0e5B73d0565E2De46741231Eb247C7",
+        "identityProof": {
+          "type": "DID-CONTRACT",
+          "id": "did:ethr:0xE6Fe788d8ca214A080b0f6aC7F48480b2AEfa9a6",
+          "purpose": "CONTRACT_ADDRESS_PROOF",
+          "signature": "<signed document store>",
+          "key": {
+            "id": "did:ethr:0xE6Fe788d8ca214A080b0f6aC7F48480b2AEfa9a6#owner",
+            "type": "Secp256k1VerificationKey2018",
+            "ethereumAddress": "0xe6fe788d8ca214a080b0f6ac7f48480b2aefa9a6",
+            "owner": "did:ethr:0xE6Fe788d8ca214A080b0f6aC7F48480b2AEfa9a6"
+          }
+        }
+      }
+    ]
+  },
+  "privacy": {
+    "obfuscatedData": []
+  },
+  "signature": {
+    "type": "SHA3MerkleProof",
+    "targetHash": "61dc9186345e05cc2ae53dc72af880a3b66e2fa7983feaa6254d1518540de50a",
+    "proof": [],
+    "merkleRoot": "61dc9186345e05cc2ae53dc72af880a3b66e2fa7983feaa6254d1518540de50a"
+  }
+}
+```
+
+### Issued via direct signing, identified by DID
+
+The `DID` type will simply allow for:
+
+1. The document to claim that it has been issued by a DID (and the specific key)
+2. The verifier to check that is has been signed by the key and the key belongs to the DID
+
+```json
+{
+  "schema": "tradetrust/v1.0",
+  "data": {
+    "issuers": [
+      {
+        "name": "TradeTrust Demo",
+        "revocation": {
+          "type": "REVOCATION_STORE",
+          "address": "0xabcd...1234"
+        },
+        "identityProof": {
+          "type": "DID",
+          "id": "did:ethr:0xE6Fe788d8ca214A080b0f6aC7F48480b2AEfa9a6",
+          "purpose": "DOCUMENT_ISSUANCE",
+          "key": {
+            "id": "did:ethr:0xE6Fe788d8ca214A080b0f6aC7F48480b2AEfa9a6#owner",
+            "type": "Secp256k1VerificationKey2018",
+            "ethereumAddress": "0xe6fe788d8ca214a080b0f6ac7f48480b2aefa9a6",
+            "owner": "did:ethr:0xE6Fe788d8ca214A080b0f6aC7F48480b2AEfa9a6"
+          }
+        }
+      }
+    ]
+  },
+  "proof": [
+    {
+      "type": "DidGenericSignature",
+      "proofPurpose": "assertionMethod",
+      "signature": "<signed merkle root>"
+    }
+  ]
 }
 ```
