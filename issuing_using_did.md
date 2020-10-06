@@ -2,8 +2,6 @@
 
 Raymond Yeh
 
-Status: Accepted
-
 # Identify Issuer & Issuing Document using DID
 
 ## Goal
@@ -130,6 +128,9 @@ Some examples are:
 1. Top level identifier using DID, document issued & revoked with document store
 1. Top level identifier using DID, document signed with key in DID
 1. etc
+
+[DNS-DID Sample](https://gist.github.com/yehjxraymond/a27ca5413673d0783c107c8d171cf1c9)
+[DNS Sample](https://gist.github.com/yehjxraymond/952abe6e8d25a8263b804468785e0844)
 
 ## Examples
 
