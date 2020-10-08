@@ -6,7 +6,7 @@ Draft
 
 ## Goal
 
-ERC721 Burnable Token can be irreversibly burned (destroyed). The ERC721 implemented by OpenZeppelin allow this by transfering burn tokens to address(0) as shown below:
+ERC721 Burnable Token can be irreversibly burned (destroyed). The ERC721 implemented by OpenZeppelin allows this by transfering burn tokens to address(0) as shown below:
 
 ```sol
 function _burn(address owner, uint256 tokenId) internal {
@@ -21,7 +21,7 @@ function _burn(address owner, uint256 tokenId) internal {
 }
 ```
 
-However, TradeTrust was still required to render and track burnt token. This means that TradeTrust would have to add on to the ERC721 implementation to do so.
+However, TradeTrust is still required to render and track burnt token. Since unminted tokens and destoryed token have the same owner address in the Erc721 Token Registry, we needed to find a way to differentiate a unminted and burnt token. This means that TradeTrust would have to modify the ERC721 implementation or modify its verifier method.
 
 ## Options
 
@@ -42,9 +42,9 @@ Cons:
 - event emission might be lost in future
 - state is not immediately available to be queried (as both unminted token and burnt tokens had `0x0` address, thus we need to query events)
 
-#### using 0xknown as burn address (like [0xdead](https://etherscan.io/address/0x000000000000000000000000000000000000dead))
+#### using 0xknown as burn address (like [0x000000000000000000000000000000000000dead](https://etherscan.io/address/0x000000000000000000000000000000000000dead))
 
-This method instead would see that the token would be burn to `0xdead` address, a known burn address which no one has own the keys for. Subsequently, in order to track the token, we will need to check the `ownerOf` token from the token registry.
+This method instead would see that the token would be burn to `0xdead` address, a known burn address which no one has the keys for. Subsequently, in order to track the token, we will need to check the `ownerOf` token from the token registry.
 
 Pros:
 
@@ -59,7 +59,7 @@ Cons:
 
 ## Implementation
 
-In the end a 0xknown burn address was choosen. Since the logic of tracking token after burning is an app layer logic, there is no need to bloat the `TradeTrustERC721` smart contract with more methods. Also, scalability wise, if there were more intermediate state, other known burn address can be used to represent different states as opposed to more complex app layer logic on the verifier.
+In the end, a 0xknown burn address, `0x000000000000000000000000000000000000dead` was choosen. Since the logic of tracking token after burning is an app layer logic, there is no need to bloat the `TradeTrustERC721` smart contract with more methods. Also, scalability wise, if there were more intermediate state, other known burn address can be used to represent different states as opposed to more complex app layer logic on the verifier.
 
 ## Review on Current State
 
