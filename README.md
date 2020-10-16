@@ -17,3 +17,4 @@ Architectural Decision Records (ADRs) for OpenAttestation/OpenCerts/TradeTrust
 | [Identifier Resolution Framework](./identifier_resolution_framework.md)             | Draft    | OpenAttestation             |
 | [Workstream](./workstream.md)                                                       | Draft    | OpenAttestation             |
 | [3rd Party Identifier Resolver API](./identifier_resolution_api.md)                 | Draft    | OpenAttestation, Tradetrust |
+| [Identify Issuer & Issuing Document using DID](./issuing_using_did.md)              | Draft    |                             |
