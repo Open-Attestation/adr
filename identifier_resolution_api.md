@@ -59,7 +59,7 @@ For successful resolution, the API must return a `200` response in `application/
   "identity": {
     "identifier": "0x0103e04ecaa67c4e5a8c6dc1ddda35340e2c6bc8",
     "name": "ABC Pte Ltd",
-    "remarks": "Added by Raymond"
+    "source": "Agency name, Singapore" // an optional field, refers to information that is verified by another party.
   }
 }
 ```
@@ -85,17 +85,17 @@ This is the endpoint that can be used to search for entries on the resolver. Sam
     {
       "identifier": "0x0103e04ecaa67c4e5a8c6dc1ddda35340e2c6bc8",
       "name": "ABC Pte Ltd",
-      "remarks": "Added by Raymond"
+      "source": "Agency name, Singapore" // an optional field, refers to information that is verified by another party.
     },
     {
       "identifier": "0x74306e2163d72bf2f3241dd5730893463433474f",
       "name": "Seller ABC (docs)",
-      "remarks": "Added by Shujing"
+      "source": "Agency name, Singapore" // an optional field, refers to information that is verified by another party.
     },
     {
       "identifier": "0x1dc271eae22a83c9670571d1a206043e8a420fde",
       "name": "Identity ABC",
-      "remarks": "Added by Raymond"
+      "source": "Agency name, Singapore" // an optional field, refers to information that is verified by another party.
     }
   ]
 }
