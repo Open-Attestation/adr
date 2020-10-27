@@ -90,7 +90,7 @@ This is the endpoint that can be used to search for entries on the resolver. Sam
     {
       "identifier": "0x74306e2163d72bf2f3241dd5730893463433474f",
       "name": "Seller ABC (docs)",
-      "source": "Added by Shujing" // an optional field, refers to information that is verified by another party.
+      "source": "Agency name, Singapore" // an optional field, refers to information that is verified by another party.
     },
     {
       "identifier": "0x1dc271eae22a83c9670571d1a206043e8a420fde",
