@@ -51,10 +51,48 @@ In order for the parent to communicate with its child window, a reference can be
   const childWin = window.open(url, "_blank");
 ```
 
-Once the reference is made, the parent can send messages to the child window via postMessage: 
+Once the reference is made, we will establish a 3-way handshake to ensure that messages can be sent from parent to child and child to parent. This is to 
+ensure that a connection is established and both parties synchronize (SYN) and acknowledge (ACK) each other. Here is a simple illustration of how it is done:
+
+![3-way handshake](./assets/offline_verifier/tcp.png)
+
+When the child window is ready, it will send a SYN message to the parent through:
 
 ```js
-  childWin.postMessage({ document: MY_JSON_FILE });
+window.opener.postMessage({ messageType: "SYN" });
+```
+
+When the parent receives the SYN message, he will send out a SYNACK message to its child:
+
+```js
+if (event.data.messageType == "SYN") {
+  childWin.postMessage({ messageType: "SYNACK" });
+}
+```
+
+When the child receives the SYNACK message, he will send out an ACK message back to its parent:
+
+```js
+if (event.data.messageType == "SYNACK") {
+  window.opener.postMessage({ messageType: "ACK" });
+}
+```
+
+Now, a connection has been established and the parent can send the document over to the child window: 
+
+```js
+if (event.data.messageType == "ACK") {
+  childWin.postMessage({ messageType: "DOC", document: MY_JSON_FILE });
+}
+```
+
+The child window will now be able to retrieve the document and upload it to the dropzone for it to be verified:
+
+```js
+if (event.data.messageType == "DOC") {
+  const doc = event.data.document;
+  updateCertificate(doc);
+}
 ```
 
 ## Alternative Solution
