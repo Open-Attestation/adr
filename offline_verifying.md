@@ -45,53 +45,37 @@ We can use the postMessage method to conduct parent and child communication. To 
 
 ```
 
-In order for the parent to communicate with its child window, a reference can be saved to the return value of `window.open()`. For example:
+In order for the parent to communicate with its child window, a reference can be saved to the return value of `window.open()`. We will
+also pass in the index of the file as the name of the child window to ensure that the correct inner .tt document is sent to the child window. For example:
 
 ```js
-  const childWin = window.open(url, "_blank");
+  const childWin = window.open(url, index);
 ```
 
-Once the reference is made, we will establish a 3-way handshake to ensure that messages can be sent from parent to child and child to parent. This is to 
-ensure that a connection is established and both parties synchronize (SYN) and acknowledge (ACK) each other. Here is a simple illustration of how it is done:
+Once the reference is made, we will establish a 2-way handshake to ensure that messages can be sent from parent to child and child to parent. This is to 
+ensure that the parent will send over the document only when the child window is ready to receive it.
 
-![3-way handshake](./assets/offline_verifier/tcp.png)
-
-When the child window is ready, it will send a SYN message to the parent through:
+When the child window is ready, it will send a READY message to the parent through:
 
 ```js
-window.opener.postMessage({ messageType: "SYN" });
+window.opener.postMessage({ type: "READY" });
 ```
 
-When the parent receives the SYN message, he will send out a SYNACK message to its child:
+When the parent receives the READY message, he will send out a LOAD_DOCUMENT message to its child which references the inner .tt document in 
+the attachments attribute of the parent .tt file:
 
 ```js
-if (event.data.messageType == "SYN") {
-  childWin.postMessage({ messageType: "SYNACK" });
+if (event.data.type == "LOAD_DOCUMENT") {
+  childWin.postMessage({ type: "LOAD_DOCUMENT",payload: MY_JSON_FILE.data.attachments[childWin.name].data });
 }
 ```
 
-When the child receives the SYNACK message, he will send out an ACK message back to its parent:
+When the child receives the LOAD_DOCUMENT message, he will retrieve the document and process it to before uploading it to the dropzone for it to be verified:
 
 ```js
-if (event.data.messageType == "SYNACK") {
-  window.opener.postMessage({ messageType: "ACK" });
-}
-```
-
-Now, a connection has been established and the parent can send the document over to the child window: 
-
-```js
-if (event.data.messageType == "ACK") {
-  childWin.postMessage({ messageType: "DOC", document: MY_JSON_FILE });
-}
-```
-
-The child window will now be able to retrieve the document and upload it to the dropzone for it to be verified:
-
-```js
-if (event.data.messageType == "DOC") {
-  const doc = event.data.document;
-  updateCertificate(doc);
+if (event.data.type == "LOAD_DOCUMENT") {
+  const doc = window.atob(event.data.payload.split(":")[2]);
+  updateCertificate(JSON.parse(doc));
 }
 ```
 
