@@ -293,12 +293,13 @@ Released as v1.29.0
 [#249](https://github.com/TradeTrust/tradetrust-website/pull/249)
 
 Allow documents signed with `DNS-DID` to be verified
-
-### To Be Done
-
-#### Revocation method: Revocation Store
+### Revocation method: Revocation Store
 
 Implement the schema, oa-verify method to allow a document store to be used as a revocation store for documents which can be revoked, instead of just using `NONE` in the `revocation.type`.
+
+As of now (180221), users can indicate `REVOCATION_STORE` in their documents for `revocation.type`. With a corresponding `revocation.location` documentStore address, this will allows users to check if their deployed `documentStore` has revoked any documents. 
+
+### To Be Done
 
 #### Individual document wrapping in CLI
 
