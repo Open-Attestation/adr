@@ -96,7 +96,7 @@ A `revocation.type: "NONE"` must exist to ensure that the an end user did not ob
         "id": "did:ethr:0xE6Fe788d8ca214A080b0f6aC7F48480b2AEfa9a6",
         "revocation": {
           "type": "REVOCATION_STORE",
-          "address": "0xabcd...1234"
+          "location": "0xabcd...1234"
         },
         "identityProof": {
           "type": "DNS-DID",
@@ -157,7 +157,7 @@ The `DNS-DID` type will be slightly different from the `DNS-TXT` method (which m
         "name": "TradeTrust Demo",
         "revocation": {
           "type": "REVOCATION_STORE",
-          "address": "0xabcd...1234"
+          "location": "0xabcd...1234"
         },
         "identityProof": {
           "type": "DNS-DID",
