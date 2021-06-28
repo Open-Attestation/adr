@@ -2,7 +2,7 @@
 
 ## The Problem
 
-As there are many repositories that require to be connected to the Ethereum node, we have multiple ways of connecting, and thus, lead to un managable and inconsistant code through out all the repositories.
+As there are many repositories that require to be connected to the Ethereum node, we have multiple ways of connecting, and thus, lead to un manageable and inconsistent code through out all the repositories.
 
 ## The Solution
 
