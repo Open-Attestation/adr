@@ -91,6 +91,27 @@ This will unfortunately be an unresolved issue if we use DNS, as DNS has no arch
 #### DNS Spoofing
 [DNS spoofing](https://en.wikipedia.org/wiki/DNS_spoofing) is partially mitigated by using a well known DNS resolver such as Google or Cloudflare to retrieve the TXT records. However using DNSSEC can fully resolve the issue.
 
+## Using DNS to verify the identity of a signer
+When signing a certificate, one can add it's public key into the `proof.publicKey` field, so that OA can automatically verify that the identity of the signer:
+```json
+"proof": {
+  "type": "EcdsaSecp256k1Signature2019",
+  "created": "2020-04-26T21:41:34.663Z",
+  "proofPurpose": "assertionMethod",
+  "publicKey": "0x44E682d207bcDDDAD0Bb3a650cCb9de0911B9D3A#owner",
+  "signature": "0x49898c7ded0bef0e3fb96b3f69b097dda45a474c62142d72a0834d814c092cbe458a16f44efe136614e74ffd69b8273688af347826b9efaccd6a12f200185eef1c"
+}
+```
+
+However a signature itself doesn't prove identity. We can reuse a similar mechanism as above and add the public key into a DNS-TXT record: 
+```
+TXT     openatts a=ecdsa-secp256k1-signature-2019; p=0x44E682d207bcDDDAD0Bb3a650cCb9de0911B9D3A
+```
+
+In order to resolve the identity, the value of `p` in the TXT record must match the value of `proof.publicKey` of the signed certificate.
+
+> Note: We follow [RFC6376](https://tools.ietf.org/html/rfc6376) convention.
+
 ## Can other identity proofs be used?
 
 ```json
