@@ -10,16 +10,16 @@ They are:
 
 Each of these implementation have various pros and cons and this paper will not go into the details of them. Instead, we would refer to the readers to a paper [3] written by Kaliya young, which goes into the specific details of these various implementations.
 
-Although contrary to what the above paper hopes to achieves, what we propose is another flavour of a verifiable credential that is expressed in JSON-LD using linked data proofs that leverage on Merkle hash trees that are less complex (as compared to [debatable]) ZKP implementations and more pragmatic in practice [also debatable] [5]. 
+Although contrary to what the above paper hopes to achieves, what we propose is another flavour of a verifiable credential that is expressed in JSON-LD using linked data proofs that leverage on Merkle hash trees that are less complex ZKP implementations and more pragmatic in practice [5][6]. 
 
 # Design of the proof:
-Before we get into the design of the proof, we need to establish a few definitions around our solution. In the current implementation usage for our solution in `OpenAttestation`, the **set of claims** within **our credential** is mostly pre-defined and are mostly tied to a single **subject**. [2] While this might simplify the solution, it might cause a few limitations as discussed in the limitations section. 
+Before we get into the design of the proof, we need to establish a few definitions around our solution. In the current implementation usage for our solution in `OpenAttestation`, the **set of claims** within **our credential** is mostly pre-defined and are mostly tied to a single **subject**. [2]
 
 We will first start with a minimal Verifiable credential, then talk about how we protect the integrity of this document, while discussing this, we will also touch upon selective disclosure as a consequence of our implementation and its limitations. Lastly, we will extend our solution to allow a more efficient way of verifying credentials in a batch using merkle trees.
 
 We assume that the reader is familiar with basic cryptographic primitives and would not go into a deep discussion about them.
 
-First of all, lets start with a very minimal credential that adheres to the VC data model specification.
+First of all, let's start with a very minimal credential that adheres to the VC data model specification.
 
 ```json
 {
@@ -58,7 +58,7 @@ First of all, lets start with a very minimal credential that adheres to the VC d
 
 The anatomy of the credentials is as above, but we will focus on the `credentialSubject` object as its values are the **set of claims** about the **subject**.
 
-For every property, nested or otherwise, we will first generate a secure random string (also known as a salt). This is to prevent a rainbow table attack [do i need to elaborate further?]. While traversing the key value pairs, we would also keep a reference to the path of the original structure of the credential subject.  After all the processing, we would flatten the values in an array of objects with the key value pairs of `value`, indicating the secure random string, and `path`, indicating the reference of the path of the original document.
+For every property, nested or otherwise, we will first generate a secure random string (also known as a salt). This is to prevent a rainbow table attack [7]. While traversing the key value pairs, we would also keep a reference to the path of the original structure of the credential subject.  After all the processing, we would flatten the values in an array of objects with the key value pairs of `value`, indicating the secure random string, and `path`, indicating the reference of the path of the original document.
 
 The code sample below shows the salted credential subject.
 
@@ -248,10 +248,10 @@ Once processed, the credential will look like this.
 }
 
 ```
-Notice that now the credential does not have the field `credentialSubject.alumniOf` present, but if verified, we would still be able to construct the digest of the credential to ensure document integrity.
+Notice that now the credential does not have the field `credentialSubject.alumniOf` present, but during verification, this hash would be added to the array of hashes, then sorted before it is used to calculate the digest of the credential to ensure document integrity (see the section on Design of Proof).
 
 ## Merkle Hash trees:
-Although we prefaced our proposal with the term Merkle trees, we have yet to talk about anything related to merkle trees. For the uninformed, a merkle hash tree is constructed by first hashing the leaf nodes (usually some data), then hashing the hashes of the leaf nodes arranged in a binary tree structure. The first node at the top of the binary tree is also known as the merkle root. This is an efficient way to compact multiple credentials into a hash representation so that an issuer could issue multiple credentials in only one transaction (either in a centralised server like a Certificate Authority, or something more decentralised like a blockchain ledger). 
+Although we prefaced our proposal with the term Merkle trees, we have yet to talk about anything related to merkle trees. For the uninformed, a merkle hash tree is constructed by first hashing the leaf nodes (usually some data), then hashing the hashes of the leaf nodes arranged in a binary tree structure [8]. The first node at the top of the binary tree is also known as the merkle root. This is an efficient way to compact multiple credentials into a hash representation so that an issuer could issue multiple credentials in only one transaction (either in a centralised server like a Certificate Authority, or something more decentralised like a blockchain ledger). 
 
 From the current solution with the minimal credential, if the credential were to be processed in a batch of other credentials, we would take the `targetHash` of each individual credential and produce a Merkle Tree representation of the hashes. We would then take the merkle root of this tree and append it to the proof object section of the credential. Simultaneously, we would append the intermediate hashes used to construct the Merkle Tree into the `proofs` key value pair. Lastly, if we were to process only one credential, then both `merkleRoot` and `targetHash` would resolve to the same value.
 
@@ -312,7 +312,7 @@ At the time of verification, the verifier would not only check for the credentia
 # Limitations of the Proof:
 One limitation behind the selective disclosure method we used is that obfuscating all key-value pairs within an object would lead to an error, for example if an object named `foo` contains the keys `bar` and `baz`, then obfuscating both `bar` and `baz` would throw an error in our solution. Instead, what we recommend people to do is to actually obfuscate the entire object itself ie: `foo` in order to obfuscate all the values within.
 
-Another limitation about the proof is that the encoded salts within the proof object is huge. This encoded salts would only grow linearly in size [??] depending on the number of fields created within the credential, which might impact the portability of the credential [??], or hit the size constraints of a protocol such as maybe an embedded QR code.
+Another limitation about the proof is that the encoded salts within the proof object is huge. This encoded salts would only grow linearly in size depending on the number of fields created within the credential, which might impact the portability of the credential, or hit the size constraints of a protocol such as maybe an embedded QR code.
 
 # Related Work:
 There are related works that have much different solutions from the proof proposed here. In [4], similar to us, use the leaf nodes to represent a claim, and they proposed methods to actually combine multiple subtrees together to get a combined credential consisting of different sets of claims. Also in [1], they applied the Merkle hash tree to construct redactable signatures, but did not use them in the context of a credential.
@@ -326,4 +326,7 @@ In conclusion, we hope that this paper gives an insight into the proof signature
 3. Kaliya Young “Identity Woman” COVID Credentials Initiative. Verifiable Credentials Flavors Explained
 4. David Bauer, Douglas M. Blough, and David Cash. 2008. Minimal Information Disclosure with Efficiently Verifiable Credentials. In Proceedings of the 4th ACM Workshop on Digital Identity Management (Alexandria, Virginia, USA) (DIM ’08). Association for Computing Machinery, New York, NY, USA, 15–24.
 5. Andreea A. Corci, Detleft Hühnlein, Tina Hühnlein, and Olaf Rode. Towards Interoperable Vaccination Certificate Services. ARES 2021, August 17–20, 2021, Vienna, Austria
+6. Kenji Saito, Satoki Watanabe. Lightweight Selective Disclosure for Verifiable Documents on Blockchain. arXiv:2103.07655, March 13, 2021.
+7. https://en.wikipedia.org/wiki/Rainbow_table
+8. https://en.wikipedia.org/wiki/Merkle_tree
 
