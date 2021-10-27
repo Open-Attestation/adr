@@ -219,6 +219,8 @@ _Sample Response_
   "response": {
     "certId": "0123456789",
     "certStatus": "good",
+    "reasonCode": 4,
+    "revocationDate": "2021-10-26T05:02:20.100Z"
     "thisUpdate": "2021-10-26T05:02:20.100Z"
   }
 }
@@ -256,11 +258,15 @@ _Sample Response_
     {
       "certId": "0123456789",
       "certStatus": "good",
+      "reasonCode": 4,
+      "revocationDate": "2021-10-26T05:02:20.100Z",
       "thisUpdate": "2021-10-26T05:02:20.100Z"
     },
     {
       "certId": "0123456790",
       "certStatus": "revoked",
+      "reasonCode": 4,
+      "revocationDate": "2021-10-26T05:02:20.100Z",
       "thisUpdate": "2021-10-26T05:02:20.100Z"
     }
   ]
@@ -280,6 +286,92 @@ Currently OpenAttestation is able to verify a document signed by a DID. Extensio
 5. OSCP Responder responds with a [certificate status value](#certificate-status-value)
 6. If the certificate status value is `revoked` or `unknown`, return negative certificate verification
 7. Otherwise, carry out existing verification procedures
+
+### 1. Revocation Type (Open Attestation)
+
+```tsx
+export enum RevocationType {
+  None = "NONE",
+  RevocationStore = "REVOCATION_STORE",
+  OcspResponder = "OCSP_RESPONDER",
+}
+```
+
+```json
+{
+  "recipient": {
+    "name": "John Doe"
+  },
+  "$template": {
+    "name": "main",
+    "type": "EMBEDDED_RENDERER",
+    "url": "https://tutorial-renderer.openattestation.com"
+  },
+  "issuers": [
+    {
+      "id": "did:ethr:0xaCc51f664D647C9928196c4e33D46fd98FDaA91D",
+      "name": "Demo Issuer",
+      "revocation": {
+        "type": "OCSP_RESPONDER",
+        "location": "https://ocsp-responder.demo-site.com"
+      }
+    }
+  ]
+}
+```
+
+### 2. Getting Revocation Status (OA Verify)
+
+```tsx
+const getRevocationStatus = async (
+  docType: v3.RevocationType,
+  location: string | undefined
+): Promise<RevocationStatus> => {
+  switch (docType) {
+    case v3.RevocationType.RevocationStore:
+      ...
+    case v3.RevocationType.OcspResponder:
+      return isRevokedByOcspResponder({
+        targetHash,
+        location
+      })
+    case v3.RevocationType.None:
+      ...
+    default:
+      ...
+  }
+};
+
+```
+
+`isRevokedByOcspResponder` implementation:
+
+```tsx
+const isRevokedByOcspResponder = async ({
+  targetHash,
+  location,
+}): Promise<RevocationStatus> => {
+  const { response } = await fetch(`${location}/${targetHash}`);
+  const { certStatus, reasonCode } = response;
+
+  if (certStatus === "good") {
+    return {
+      revoked: false,
+      address: location,
+    };
+  }
+
+  return {
+    revoked: true,
+    address: location,
+    reason: {
+      message: REVOCATION_MESSAGES[reasonCode],
+      code: reasonCode,
+      codeString: REVOCATION_REASONS[reasonCode],
+    },
+  };
+};
+```
 
 # Appendix
 
