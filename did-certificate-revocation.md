@@ -1,3 +1,10 @@
+# Table of Contents
+
+1. [Abstract](#example)
+2. [Problem Statement](#example2)
+3. [Possbile Solutions](#third-example)
+4. [Fourth Example](#fourth-examplehttpwwwfourthexamplecom)
+
 # Abstract:
 
 This document discusses two methods of determining a certificate's revocation status. Both Certificate Revocation Lists (CRLs) and the Online Certificate Status Protocol (OCSP) methods are explored and discussed.
@@ -62,7 +69,7 @@ Taking for example the scenario of checking if work passes have been revoked by 
 
 # Proposed Implementation
 
-## Certificate Revocation List
+## Certificate Revocation List Implementation
 
 This section was written based on RFC5280.
 
@@ -183,7 +190,7 @@ If the entity is not in possession of a previously downloaded CRL, simply downlo
 
 CRL distribution for our purposes can be done through a simple web server. The entity who wishes to obtain the latest CRL may make a HTTP GET request with an API key to obtain the most recently published CRL. The CA may wish to rate-limit the requests as downloading of a CRL require significant bandwidth.
 
-## Online Certificate Status Protocol
+## Online Certificate Status Protocol Implementation
 
 This section was written based on RFC6960.
 
