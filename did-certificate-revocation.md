@@ -260,6 +260,20 @@ _Sample Response_
 }
 ```
 
+# Extending OpenAttestation
+
+![Overview](./assets/did-certificate-revocation/oa-did-revocation.png)
+
+Currently OpenAttestation is able to verify a document signed by a DID. Extension of OA would require adding revocation checking to the verification process:
+
+1. Agency A embeds the URL of the Revoked Certificates API (OCSP Responder) when [creating the raw document](https://www.openattestation.com/docs/verifiable-document/did/raw-document) which is then signed using DID.
+2. When Agency B wishes to verify a certificate, they submit it to verify.gov.sg, which uses OA to verify OA-issued certificates.
+3. OA parses certificate data for OSCP Responder URL. If OCSP Responder URL does not exist, skip steps 4, 5 and 6.
+4. OA sends a GET request to OSCP Responder URL with the certificate identifier
+5. OSCP Responder responds with a [certificate status value](#certificate-status-value)
+6. If the certificate status value is `revoked` or `unknown`, return negative certificate verification
+7. Otherwise, carry out existing verification procedures
+
 # Appendix
 
 ## Reason Codes
@@ -286,6 +300,7 @@ _Sample Response_
 | ------- | ------------------------------------------------------- |
 | good    | certificate is not currently revoked                    |
 | revoked | certificate has been temporarily or permanently revoked |
+| unknown | certificate not recognized by CA                        |
 
 # References:
 
