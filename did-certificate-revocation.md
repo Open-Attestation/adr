@@ -194,36 +194,65 @@ Relevant sections:
 
 ### API
 
-POST /:certListSerialNumber
+`GET /:certId`
 
-REQUEST
+Returns the revocation status of a single certificate
+
+_Query Parameters_
+
+| Parameter | Description            |
+| --------- | ---------------------- |
+| certId    | Certificate identifier |
+
+_Sample Response_
+
+```json
+{
+  "producedAt": "2021-10-26T05:02:20.100Z",
+  "response": {
+    "certId": "0123456789",
+    "certStatus": "good",
+    "thisUpdate": "2021-10-26T05:02:20.100Z"
+  }
+}
+```
+
+`POST /`
+
+Returns the revocation status of certificates specified in the request body
+
+_Request Body_
+
+| Parameter   | Description                     |
+| ----------- | ------------------------------- |
+| requestList | List of certificate identifiers |
 
 ```json
 {
   "requestList": [
     {
-      "reqCert": "0123456789"
+      "certId": "0123456789"
     },
     {
-      "reqCert": "0123456790"
+      "certId": "0123456790"
     }
   ]
 }
 ```
 
-RESPONSE
+_Sample Response_
 
 ```json
 {
   "producedAt": "2021-10-26T05:02:20.100Z",
   "responses": [
     {
-      "certID": "0123456789",
+      "certId": "0123456789",
       "certStatus": "good",
       "thisUpdate": "2021-10-26T05:02:20.100Z"
     },
     {
-      "certID": "0123456790",
+      "certId": "0123456790",
       "certStatus": "revoked",
       "thisUpdate": "2021-10-26T05:02:20.100Z"
     }
