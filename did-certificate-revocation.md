@@ -260,7 +260,7 @@ _Sample Response_
 }
 ```
 
-# Extending OpenAttestation
+### Extending OpenAttestation (OCSP)
 
 ![Overview](./assets/did-certificate-revocation/oa-did-revocation.png)
 
