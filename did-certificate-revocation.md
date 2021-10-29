@@ -399,6 +399,26 @@ const isRevokedByOcspResponder = async ({
 | revoked | certificate has been temporarily or permanently revoked |
 | unknown | certificate not recognized by CA                        |
 
+## Certificate Transparency
+
+> **_NOTE:_** Certificate transparency was explored while writing this ADR but was found to be irrelevant for the purposes of the task: revoking DID-signed documents without a document store
+
+### What is Certificate Transparency?
+
+Certificate Transparency (CT) is an Internet security standard and open source framework for monitoring and auditing digital certificates. The standard creates a system of public logs that seek to eventually record all certificates issued by publicly trusted certificate authorities, allowing efficient identification of mistakenly or maliciously issued certificates.
+
+> **TLDR;** A CT log records all issued certificates for the purposes of monitoring dishonest certificate issuing activity.
+
+### What does Certificate Transparency aim to solve?
+
+How do you spot fradulent certificates? Without certificate transparency, it is possible to issue certificates for the purpose of
+
+1. Typo-squatting e.g. facevook.com
+2. Domain-squatting e.g. facebook.com-evil.com
+3. Confusable unicode characters e.g. facébook.com
+
+When a certificate is issued, the browser checks that the there is a valid certificate for the domain and displays the secure lock symbol. This may trick the user into thinking that the domain is legitimate. A certificate transparency log could allow, in this case, Facebook, to monitor certificates issued for domains that are similar to facebook.com, and contact the relevant CAs to revoke the certificates.
+
 # References:
 
 1. D. Cooper, S. Santesson, S. Farrell, S. Boeyen, R. Housley, W. Polk (2008). Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile. RFC 5280. Retrieved from https://datatracker.ietf.org/doc/html/rfc5280
