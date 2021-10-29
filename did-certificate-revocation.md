@@ -91,15 +91,15 @@ The CRL object, as adapted for the extension of OpenAttestation is as follows:
   "data": {
     "issuers": [
       {
-        "id": "527d39aa-d2fa-4e98-b219-0991b2c12b68:string:did:ethr:0x296eCD182E9A0BD845120691880219D6b26ACF8F",
-        "name": "fabeb58e-846d-48c4-8a3a-24f8997fca9d:string:Demo Issuer",
+        "id": "did:ethr:0x296eCD182E9A0BD845120691880219D6b26ACF8F",
+        "name": "Demo Issuer",
         "revocation": {
-          "type": "b6af10ff-fa48-453c-8b6c-81ee24a05c88:string:NONE"
+          "type": "NONE"
         },
         "identityProof": {
-          "type": "628950fd-adc0-42ce-8db1-a8fd91f3a317:string:DNS-DID",
-          "location": "f97b32e7-7881-46f9-8b44-c8932a050afc:string:qualified-apricot-spoonbill.sandbox.openattestation.com",
-          "key": "fd878c77-166d-4944-a6a5-1ebd510fd593:string:did:ethr:0x296eCD182E9A0BD845120691880219D6b26ACF8F#controller"
+          "type": "DNS-DID",
+          "location": "qualified-apricot-spoonbill.sandbox.openattestation.com",
+          "key": "did:ethr:0x296eCD182E9A0BD845120691880219D6b26ACF8F#controller"
         }
       }
     ],
@@ -156,8 +156,6 @@ The CRL object, as adapted for the extension of OpenAttestation is as follows:
 
   - `notBefore` specifies the date from which the document is valid i.e. the document is valid _on or after_ this date but not before
   - `notAfter` specifies the date after which the document becomes invalid i.e. the document is valid _on or before_ this date but not after
-
-    <br/>
 
 - `thisUpdate` specifies the date on which the document was published
 - `nextUpdate` specifies the date on which the next document will be published
