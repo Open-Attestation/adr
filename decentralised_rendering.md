@@ -13,10 +13,14 @@ The purpose of the decentralised document renderer is to allow OpenAttestation (
 The document viewer and the document renderer will rely on [postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) for the communication, and more specifically OpenAttestation rely on [penpal](https://github.com/Aaronius/penpal), a promise-based library for securely communicating with iframes via postMessage.
 
 ## Connection
-`Penpal` is responsible for establishing the connection between the document viewer and the document renderer. The message sent to establish the connection is out-of-scope of this document. However to establish the connection correctly, few things must be mentionned:
+`Penpal` is responsible for establishing the connection between the document viewer and the document renderer. To initiate the connection, the document viewer will load the document renderer into an iframe, using the `$template.url` from the OA certificate.
+
+The message sent by penpal to establish the connection is out-of-scope of this document. However to establish the connection correctly, few things must be mentionned:
 - The document viewer and the document renderer must both provide one method only, called `dispatch`. This method is the only used for the communication of any `Actions` (see below for a description of the different actions)
 - The document viewer may have to support multiplt version of penpal. Indeed, there were a breaking change between penpal v4 and penpal v5, making [the version incompatible](https://github.com/Aaronius/penpal/issues/52). You can also decide to support a specific version of penpal. It's up to the implementer to decide.
 - The document renderer just need to conform to the version used by the document viewer. We advise to use penpal >= 5.
+
+
 
 ## Communication
 
