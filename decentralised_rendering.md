@@ -10,17 +10,36 @@ Accepted
 
 The purpose of the decentralised document renderer is to allow OpenAttestation (OA) document issuers to style their documents without code change to the different implementations of the document viewer. It does so by embedding the website specified by the document issuers as an iframe or webview (for mobile apps) and sending the content of the OA document into the iframe.
 
+It's important to note that a decentralised renderer can be configured to display multiple kind of certificates, known as `Layout`.
+
 The document viewer and the document renderer will rely on [postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) for the communication, and more specifically OpenAttestation rely on [penpal](https://github.com/Aaronius/penpal), a promise-based library for securely communicating with iframes via postMessage.
 
-## Connection
-`Penpal` is responsible for establishing the connection between the document viewer and the document renderer. To initiate the connection, the document viewer will load the document renderer into an iframe, using the `$template.url` from the OA certificate.
+## Definitions
+The following terms will be used across the document:
 
-The message sent by penpal to establish the connection is out-of-scope of this document. However to establish the connection correctly, few things must be mentionned:
+- `Document Viewer`: Website that loads a `Decentralised Renderer` through an iframe and provide down the certificate for the display.
+- `Decentralised Renderer` or `Document renderer`: Website responsible of displaying one or more certificates. Usually they are not usable outside a iframe, but keep in mind it's a plain website.
+- `Layout`: A template used to display a specific certificate in a document renderer. A document renderer is able to rendere multiple kind of certificates. In other words, a document rednerer supports multiple `Layouts`
+- `View`: A `Layout` may be composed of multiples view. For instance in Opencerts, You may have a view to display the certificate, and a view to display the transcripts.
+- `Action`: A plain Javascript object used for the communication between the document viewer and the document renderer
+
+## Process overview
+The following steps happen to establish the communication. For the moment we will document from a macro perspective only what's going, The information will be more detailed below:
+1. To initiate the connection, the document viewer will load the document renderer into an iframe, using the `$template.url` from the OA certificate.
+1. Once established, the document viewer will send the certificate to display to the document renderer, using the `RENDER_DOCUMENT` action
+1. The document renderer receive the certificate, and display the correct layout, using the `$template.name` from the OA certificate.
+
+These are the minumum steps needed to display a certificate. Additional steps may occur:
+- The document send the list of views to the document viewer using the `UPDATE_TEMPLATES` action. Usually this step happens right after the `RENDER_DOCUMENT` action.
+- The document viewer send the `View` to display using the `SELECT_TEMPLATE` action. Usually, it's an action triggered by a user.
+
+You will find below, the list of actions
+
+## Connection
+`Penpal` is responsible for establishing the connection between the document viewer and the document renderer. The message sent by penpal to establish the connection is out-of-scope of this document. However to establish the connection correctly, few things must be mentionned:
 - The document viewer and the document renderer must both provide one method only, called `dispatch`. This method is the only used for the communication of any `Actions` (see below for a description of the different actions)
 - The document viewer may have to support multiplt version of penpal. Indeed, there were a breaking change between penpal v4 and penpal v5, making [the version incompatible](https://github.com/Aaronius/penpal/issues/52). You can also decide to support a specific version of penpal. It's up to the implementer to decide.
 - The document renderer just need to conform to the version used by the document viewer. We advise to use penpal >= 5.
-
-
 
 ## Communication
 
