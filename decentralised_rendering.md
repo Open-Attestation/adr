@@ -10,7 +10,15 @@ Accepted
 
 The purpose of the decentralised document renderer is to allow OpenAttestation (OA) document issuers to style their documents without code change to the different implementations of the document viewer. It does so by embedding the website specified by the document issuers as an iframe or webview (for mobile apps) and sending the content of the OA document into the iframe.
 
-## Frame-to-Frame Communication
+The document viewer and the document renderer will rely on [postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) for the communication, and more specifically OpenAttestation rely on [penpal](https://github.com/Aaronius/penpal), a promise-based library for securely communicating with iframes via postMessage.
+
+## Connection
+`Penpal` is responsible for establishing the connection between the document viewer and the document renderer. The message sent to establish the connection is out-of-scope of this document. However to establish the connection correctly, few things must be mentionned:
+- The document viewer and the document renderer must both provide one method only, called `dispatch`. This method is the only used for the communication of any `Actions` (see below for a description of the different actions)
+- The document viewer may have to support multiplt version of penpal. Indeed, there were a breaking change between penpal v4 and penpal v5, making [the version incompatible](https://github.com/Aaronius/penpal/issues/52). You can also decide to support a specific version of penpal. It's up to the implementer to decide.
+- The document renderer just need to conform to the version used by the document viewer. We advise to use penpal >= 5.
+
+## Communication
 
 ![API](./assets/decentralised_renderer/api.png)
 
@@ -36,13 +44,13 @@ const printAction = {
 };
 ```
 
-### From host to frame actions
+### From host to frame actions (document viewer to document renderer)
 
 The following list of actions are made for the host to communicate to the iframe (and thus must be handled by application embed in the iframe):
 
 #### RENDER_DOCUMENT
 
-This action sends the document data to the child frame to be rendered.
+This action sends the document data to the child frame to be rendered. This is usually the first action that is called after the connection has been established.
 
 The payload is an object with 2 properties:
 
@@ -78,7 +86,7 @@ const action = {
 
 #### PRINT
 
-This action request for the template to process the print action by the browser.
+This action request for the template to process the print action by the browser. It gives full control to the renderer to build the look and feel of the document when printed. With this, we ensure no interaction with the document viewer.
 
 Example:
 
@@ -105,13 +113,13 @@ const action = {
 };
 ```
 
-## From frame to host actions
+## From frame to host actions (document renderer to document viewer)
 
 The following list of actions are made for iframe to communicate to the host (and thus must be handled by application embedding the iframe):
 
 ### UPDATE_HEIGHT
 
-This action provides the full content height of the iframe so that the host can adapt the automatically the size of the embedded iframe.
+This action provides the full content height of the iframe so that the host can adapt the automatically the size of the embedded iframe. It's worht to note that we hope to get rid of ths action one day. It was created only because we had difficulties to size correctly the iframe from the document viewer. IF you know a way to get rid of this, please get in touch with us, we will be happy to improve our architecture.
 
 The payload is the full content height of the child iframe.
 
