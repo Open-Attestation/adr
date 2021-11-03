@@ -19,7 +19,7 @@ The following terms will be used across the document:
 
 - `Document Viewer`: Website that loads a `Decentralised Renderer` through an iframe and provide down the certificate for the display.
 - `Decentralised Renderer` or `Document renderer`: Website responsible of displaying one or more certificates. Usually they are not usable outside a iframe, but keep in mind it's a plain website.
-- `Layout`: A template used to display a specific certificate in a document renderer. A document renderer is able to rendere multiple kind of certificates. In other words, a document rednerer supports multiple `Layouts`
+- `Layout`: A template used to display a specific certificate in a document renderer. A document renderer is able to rendere multiple kind of certificates. In other words, a document renderer supports multiple `Layouts`
 - `View`: A `Layout` may be composed of multiples view. For instance in Opencerts, You may have a view to display the certificate, and a view to display the transcripts.
 - `Action`: A plain Javascript object used for the communication between the document viewer and the document renderer
 
@@ -38,7 +38,7 @@ You will find below, the list of actions
 ## Connection
 `Penpal` is responsible for establishing the connection between the document viewer and the document renderer. The message sent by penpal to establish the connection is out-of-scope of this document. However to establish the connection correctly, few things must be mentionned:
 - The document viewer and the document renderer must both provide one method only, called `dispatch`. This method is the only used for the communication of any `Actions` (see below for a description of the different actions)
-- The document viewer may have to support multiplt version of penpal. Indeed, there were a breaking change between penpal v4 and penpal v5, making [the version incompatible](https://github.com/Aaronius/penpal/issues/52). You can also decide to support a specific version of penpal. It's up to the implementer to decide.
+- The document viewer **may have** to support multiple version of penpal. Indeed, there were a breaking change between penpal v4 and penpal v5, making [the version incompatible](https://github.com/Aaronius/penpal/issues/52). You can also decide to support a specific version of penpal. It's up to the implementer to decide.
 - The document renderer just need to conform to the version used by the document viewer. We advise to use penpal >= 5.
 
 ## Communication
@@ -142,7 +142,7 @@ The following list of actions are made for iframe to communicate to the host (an
 
 ### UPDATE_HEIGHT
 
-This action provides the full content height of the iframe so that the host can adapt the automatically the size of the embedded iframe. It's worht to note that we hope to get rid of ths action one day. It was created only because we had difficulties to size correctly the iframe from the document viewer. IF you know a way to get rid of this, please get in touch with us, we will be happy to improve our architecture.
+This action provides the full content height of the iframe so that the host can adapt the automatically the size of the embedded iframe. It's worth to note that we hope to get rid of ths action one day. It was created only because we had difficulties to size correctly the iframe from the document viewer. IF you know a way to get rid of this, please get in touch with us, we will be happy to improve our architecture.
 
 The payload is the full content height of the child iframe.
 
