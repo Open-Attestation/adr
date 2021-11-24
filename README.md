@@ -19,3 +19,4 @@ Architectural Decision Records (ADRs) for OpenAttestation/OpenCerts/TradeTrust
 | [Workstream](./workstream.md)                                                       | Draft    | OpenAttestation                        |
 | [3rd Party Identifier Resolver API](./identifier_resolution_api.md)                 | Draft    | OpenAttestation, Tradetrust            |
 | [Identify Issuer & Issuing Document using DID](./issuing_using_did.md)              | Draft    |                                        |
+| [DID Certificate Revocation](./did-certificate-revocation.md)                       | Draft    | OpenAttestation                        |
