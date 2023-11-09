@@ -4,7 +4,7 @@ Architectural Decision Records (ADRs) for OpenAttestation/OpenCerts/TradeTrust
 
 ## Records
 
-| Poposal                                                                             | Status   | Implementation                         |
+| Proposal                                                                            | Status   | Implementation                         |
 | ----------------------------------------------------------------------------------- | -------- | -------------------------------------- |
 | [Decentralised Document Rendering](./decentralised_rendering.md)                    | Accepted | All                                    |
 | [Selective Disclosure](./selective_disclosure.md)                                   | Accepted | All                                    |
