@@ -10,46 +10,36 @@ The goal of the universal action method is to ensure that a standard is availabl
 
 ## Universal Action
 
-The standard will provide a way for actions to be communicated to various client implementations that uses OA documents. In addition, these actions can be scanned directly using a phone's QR code scanner to process the document.
+> [!CAUTION]
+> Universal Action (`action.openattestation.com`) is now deprecated in favour of direct links to the respective verifier.
 
-An example of such action is when storing a OA document into a identity wallet mobile application. The user will be able to launch the identity wallet app and view the OA document by just scanning a QR code.
+> [!IMPORTANT]
+> Refer to [OpenAttestation documentation on creating URLs](https://www.openattestation.com/docs/distribute-section/oa-embed-qrcode) for more information.
 
-To do so, each of these actions will be URI formatted with a standard URL `action.openattestation.com?q=` followed by the action with its corresponding key contained in the anchor `#`.
-
-## Proposed Solution
-
-Sample QR code:
-
-![Proposed QR](assets/universal_actions/proposed-qr.svg)
+**Example of direct links**:
 
 ```url
-https://action.openattestation.com/?q=%7B%22type%22%3A%22DOCUMENT%22%2C%22payload%22%3A%7B%22uri%22%3A%22https%3A%2F%2Fapi-vaccine.storage.staging.notarise.io%2Fdocument%2F6cfbbcbf-85a1-4644-b61a-952c12376502%22%2C%22permittedActions%22%3A%5B%22VIEW%22%2C%22STORE%22%5D%2C%22redirect%22%3A%22https%3A%2F%2Fwww.verify.gov.sg%2Fverify%22%7D%7D#%7B%22key%22%3A%222b1236683c3a842ed4a0bb032c1cf668e24bcaf8ce599aeef502c93cb628152c%22%7D
+https://dev.opencerts.io/?q=%7B%22type%22%3A%22DOCUMENT%22%2C%22payload%22%3A%7B%22uri%22%3A%22https%3A%2F%2Fgallery.openattestation.com%2Fstatic%2Fdocuments%2Ftranscript-encrypted.opencert%22%2C%22permittedActions%22%3A%5B%22STORE%22%5D%2C%22redirect%22%3A%22https%3A%2F%2Fdev.opencerts.io%22%7D%7D#%7B%22key%22%3A%22691add1930798b63b17c8683a4776bedc16771ea5664337e21a563be0529024f%22%7D
 ```
 
-Decoded Resource (after `/?q=`):
+**Decoded Resource (after `/?q=`)**:
 
 ```json
 {
   "type": "DOCUMENT",
   "payload": {
-    "uri": "https://api-vaccine.storage.staging.notarise.io/document/6cfbbcbf-85a1-4644-b61a-952c12376502",
+    "uri": "https://gallery.openattestation.com/static/documents/transcript-encrypted.opencert",
     "permittedActions": ["VIEW", "STORE"],
-    "redirect": "https://www.verify.gov.sg/verify"
+    "redirect": "https://www.opencerts.io"
   }
 }
 ```
 
-Decoded Resource (after `#`):
+**Decoded Resource (after `#`)**:
 
 ```json
-{ "key": "2b1236683c3a842ed4a0bb032c1cf668e24bcaf8ce599aeef502c93cb628152c" }
+{ "key": "22691add1930798b63b17c8683a4776bedc16771ea5664337e21a563be0529024f" }
 ```
-
-The proposed solution is to use universal/deep links to address the namespace portion. This allow us to :
-
-1. Provide an application (think universal router) at action.openattestation.com to handle the action if the user scans the code using a standard QR code scanner on mobile and redirect to a specific client, represented in `redirect`. --or-- Link to a page to get user to download the standard wallet app, with option to redirect to the web client if they click on that.
-2. Allow any web client (verify.gov.sg, tradetrust.io or opencerts.io) to scan and process the message at the provided url for redirection. The message will be available through the `q` query parameter and `#` anchor: `<redirected url>?q=<encoded-json>#<encoded-json>`. The hostname of the provided URL must have been whitelisted by action.openattestation.com.
-3. Provide [deep linking](https://docs.expo.io/versions/latest/workflow/linking/) opportunities for iOS/Android app to open the correct application on the phone to process the action.
 
 ## Transfer Action
 
