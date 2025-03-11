@@ -11,7 +11,7 @@ The goal of the universal action method is to ensure that a standard is availabl
 ## Universal Action
 
 > [!CAUTION]
-> Universal Action (`action.openattestation.com`) is now deprecated in favour of direct links to the respective verifier.
+> The URL `action.openattestation.com` is now deprecated in favour of direct links to the respective verifier.
 
 > [!IMPORTANT]
 > Refer to [OpenAttestation documentation on creating URLs](https://www.openattestation.com/docs/distribute-section/oa-embed-qrcode) for more information.
@@ -19,7 +19,7 @@ The goal of the universal action method is to ensure that a standard is availabl
 **Example of direct links**:
 
 ```url
-https://dev.opencerts.io/?q=%7B%22type%22%3A%22DOCUMENT%22%2C%22payload%22%3A%7B%22uri%22%3A%22https%3A%2F%2Fgallery.openattestation.com%2Fstatic%2Fdocuments%2Ftranscript-encrypted.opencert%22%2C%22permittedActions%22%3A%5B%22STORE%22%5D%2C%22redirect%22%3A%22https%3A%2F%2Fdev.opencerts.io%22%7D%7D#%7B%22key%22%3A%22691add1930798b63b17c8683a4776bedc16771ea5664337e21a563be0529024f%22%7D
+https://dev.opencerts.io/?q=%7B%22type%22%3A%20%22DOCUMENT%22%2C%22payload%22%3A%7B%22uri%22%3A%22https%3A%2F%2Fgallery.openattestation.com%2Fstatic%2Fdocuments%2Ftranscript-encrypted.opencert%22%7D%7D#%7B%22key%22%3A%22691add1930798b63b17c8683a4776bedc16771ea5664337e21a563be0529024f%22%7D
 ```
 
 **Decoded Resource (after `/?q=`)**:
@@ -28,9 +28,7 @@ https://dev.opencerts.io/?q=%7B%22type%22%3A%22DOCUMENT%22%2C%22payload%22%3A%7B
 {
   "type": "DOCUMENT",
   "payload": {
-    "uri": "https://gallery.openattestation.com/static/documents/transcript-encrypted.opencert",
-    "permittedActions": ["VIEW", "STORE"],
-    "redirect": "https://www.opencerts.io"
+    "uri": "https://gallery.openattestation.com/static/documents/transcript-encrypted.opencert"
   }
 }
 ```
@@ -52,6 +50,9 @@ Important considerations of the transfer method:
 - Universal resolver (deep-linking)
 
 ### User Flow
+
+> [!NOTE]
+> Update (11 Feb 2025): This diagram is an early conception of Universal Actions and is not the actual/final implementation. The diagram will be left here for reference purposes only.
 
 ![User Flow](assets/universal_actions/user-flow.png)
 
